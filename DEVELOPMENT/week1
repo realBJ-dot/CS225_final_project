@@ -1,0 +1,4 @@
+Week one, (18th, Nov):
+	We are going to pull down the flights data (roughly 20000 flights) to local for starter.
+  The file contains the name of the airlines, the start-off locations and destinations.
+  We will create a repository containing that file and start get on analyzing the data.
