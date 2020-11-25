@@ -9,12 +9,11 @@
 #include <string>
 using std::string;
 
-#include "LUVAPixel.h"
+#include "HSLAPixel.h"
 
 namespace cs225 {
   class PNG {
   public:
-
     /**
       * Creates an empty PNG image.
       */
@@ -85,7 +84,7 @@ namespace cs225 {
       * @param y Y-coordinate for the pixel reference to be grabbed from.
       * @return A reference to the pixel at the given coordinates.
       */
-    LUVAPixel & getPixel(unsigned int x, unsigned int y);
+    HSLAPixel & getPixel(unsigned int x, unsigned int y);
 
     /**
       * Pixel access operator. Gets a const reference to the pixel at the
@@ -95,7 +94,7 @@ namespace cs225 {
       * @param y Y-coordinate for the const pixel reference to be grabbed from.
       * @return A const reference to the pixel at the given coordinates.
       */
-    const LUVAPixel & getPixel(unsigned int x, unsigned int y) const;
+    const HSLAPixel & getPixel(unsigned int x, unsigned int y) const;
 
     /**
       * Gets the width of this image.
@@ -121,19 +120,19 @@ namespace cs225 {
   private:
     unsigned int width_;            /*< Width of the image */
     unsigned int height_;           /*< Height of the image */
-    LUVAPixel *imageData_;          /*< Array of pixels */
+    HSLAPixel *imageData_;          /*< Array of pixels */
 
     /**
      * Copies the contents of `other` to self
      */
-     void _copy(PNG const & other);
+    void _copy(PNG const & other);
 
     /**
      * Common function for powering the following signature stubs.
-     * LUVAPixel & getPixel(unsigned int x, unsigned int y);
-     * const LUVAPixel & getPixel(unsigned int x, unsigned int y) const;
+     * HSLAPixel & getPixel(unsigned int x, unsigned int y);
+     * const HSLAPixel & getPixel(unsigned int x, unsigned int y) const;
      */
-    LUVAPixel & _getPixelHelper(unsigned int x, unsigned int y) const;
+    HSLAPixel & _getPixelHelper(unsigned int x, unsigned int y) const;
   };
 
   std::ostream & operator<<(std::ostream & out, PNG const & pixel);

@@ -1,6 +1,6 @@
 /**
  * @file PNG.cpp
- * Implementation of a simple PNG class using LUVAPixels and the lodepng PNG library.
+ * Implementation of a simple PNG class using HSLAPixels and the lodepng PNG library.
  *
  * @author CS 225: Data Structures
  */
@@ -21,9 +21,8 @@ using std::vector;
 
 #include "lodepng/lodepng.h"
 #include "PNG.h"
+#include "RGB_HSL.h"
 
-#include "RGB_LUV.h"
-#include "LUVAPixel.h"
 
 namespace cs225 {
   void PNG::_copy(PNG const & other) {
@@ -33,7 +32,7 @@ namespace cs225 {
     // Copy `other` to self
     width_ = other.width_;
     height_ = other.height_;
-    imageData_ = new LUVAPixel[width_ * height_];
+    imageData_ = new HSLAPixel[width_ * height_];
     for (unsigned i = 0; i < width_ * height_; i++) {
       imageData_[i] = other.imageData_[i];
     }
@@ -48,7 +47,7 @@ namespace cs225 {
   PNG::PNG(unsigned int width, unsigned int height) {
     width_ = width;
     height_ = height;
-    imageData_ = new LUVAPixel[width * height];
+    imageData_ = new HSLAPixel[width * height];
   }
 
   PNG::PNG(PNG const & other) {
@@ -69,17 +68,17 @@ namespace cs225 {
     if (width_ != other.width_) { return false; }
     if (height_ != other.height_) { return false; }
 
-    luvaColor luvaSpace1;
-    luvaColor luvaSpace2;
+    hslaColor hslaSpace1;
+    hslaColor hslaSpace2;
     rgbaColor rgbaSpace1;
     rgbaColor rgbaSpace2;
     for (unsigned i = 0; i < width_ * height_; i++) {
-      LUVAPixel & p1 = imageData_[i];
-      LUVAPixel & p2 = other.imageData_[i];
-      luvaSpace1 = {p1.l, p1.u, p1.v, p1.a};
-      luvaSpace2 = {p2.l, p2.u, p2.v, p2.a};
-      rgbaSpace1 = luv2rgb(luvaSpace1);
-      rgbaSpace2 = luv2rgb(luvaSpace2);
+      HSLAPixel & p1 = imageData_[i];
+      HSLAPixel & p2 = other.imageData_[i];
+      hslaSpace1 = {p1.h, p1.s, p1.l, p1.a};
+      hslaSpace2 = {p2.h, p2.s, p2.l, p2.a};
+      rgbaSpace1 = hsl2rgb(hslaSpace1);
+      rgbaSpace2 = hsl2rgb(hslaSpace2);
       if (rgbaSpace1.r != rgbaSpace2.r
           || rgbaSpace1.g != rgbaSpace2.g
           || rgbaSpace1.b != rgbaSpace2.b
@@ -93,7 +92,7 @@ namespace cs225 {
     return !(*this == other);
   }
 
-  LUVAPixel & PNG::_getPixelHelper(unsigned int x, unsigned int y) const {
+  HSLAPixel & PNG::_getPixelHelper(unsigned int x, unsigned int y) const {
     if (width_ == 0 || height_ == 0) {
       cerr << "ERROR: Call to cs225::PNG::getPixel() made on an image with no pixels." << endl;
       assert(width_ > 0);
@@ -118,9 +117,9 @@ namespace cs225 {
     return imageData_[index];
   }
 
-  LUVAPixel & PNG::getPixel(unsigned int x, unsigned int y) { return _getPixelHelper(x,y); }
+  HSLAPixel & PNG::getPixel(unsigned int x, unsigned int y) { return _getPixelHelper(x,y); }
 
-  const LUVAPixel & PNG::getPixel(unsigned int x, unsigned int y) const { return _getPixelHelper(x,y); }
+  const HSLAPixel & PNG::getPixel(unsigned int x, unsigned int y) const { return _getPixelHelper(x,y); }
 
   bool PNG::readFromFile(string const & fileName) {
     vector<unsigned char> byteData;
@@ -132,7 +131,7 @@ namespace cs225 {
     }
 
     delete[] imageData_;
-    imageData_ = new LUVAPixel[width_ * height_];
+    imageData_ = new HSLAPixel[width_ * height_];
 
     for (unsigned i = 0; i < byteData.size(); i += 4) {
       rgbaColor rgb;
@@ -141,12 +140,12 @@ namespace cs225 {
       rgb.b = byteData[i + 2];
       rgb.a = byteData[i + 3];
 
-      luvaColor luv = rgb2luv(rgb);
-      LUVAPixel & pixel = imageData_[i/4];
-      pixel.l = luv.l;
-      pixel.u = luv.u;
-      pixel.v = luv.v;
-      pixel.a = luv.a;
+      hslaColor hsl = rgb2hsl(rgb);
+      HSLAPixel & pixel = imageData_[i/4];
+      pixel.h = hsl.h;
+      pixel.s = hsl.s;
+      pixel.l = hsl.l;
+      pixel.a = hsl.a;
     }
 
     return true;
@@ -156,13 +155,13 @@ namespace cs225 {
     unsigned char *byteData = new unsigned char[width_ * height_ * 4];
 
     for (unsigned i = 0; i < width_ * height_; i++) {
-      luvaColor luv;
-      luv.l = imageData_[i].l;
-      luv.u = imageData_[i].u;
-      luv.v = imageData_[i].v;
-      luv.a = imageData_[i].a;
+      hslaColor hsl;
+      hsl.h = imageData_[i].h;
+      hsl.s = imageData_[i].s;
+      hsl.l = imageData_[i].l;
+      hsl.a = imageData_[i].a;
 
-      rgbaColor rgb = luv2rgb(luv);
+      rgbaColor rgb = hsl2rgb(hsl);
 
       byteData[(i * 4)]     = rgb.r;
       byteData[(i * 4) + 1] = rgb.g;
@@ -189,15 +188,15 @@ namespace cs225 {
 
   void PNG::resize(unsigned int newWidth, unsigned int newHeight) {
     // Create a new vector to store the image data for the new (resized) image
-    LUVAPixel * newImageData = new LUVAPixel[newWidth * newHeight];
+    HSLAPixel * newImageData = new HSLAPixel[newWidth * newHeight];
 
     // Copy the current data to the new image data, using the existing pixel
     // for coordinates within the bounds of the old image size
     for (unsigned x = 0; x < newWidth; x++) {
       for (unsigned y = 0; y < newHeight; y++) {
         if (x < width_ && y < height_) {
-          LUVAPixel & oldPixel = this->getPixel(x, y);
-          LUVAPixel & newPixel = newImageData[ (x + (y * newWidth)) ];
+          HSLAPixel & oldPixel = this->getPixel(x, y);
+          HSLAPixel & newPixel = newImageData[ (x + (y * newWidth)) ];
           newPixel = oldPixel;
         }
       }
@@ -218,10 +217,10 @@ namespace cs225 {
 
     for (unsigned x = 0; x < png.width(); x++) {
       for (unsigned y = 0; y < png.height(); y++) {
-        const LUVAPixel &pixel = png.getPixel(x, y);
+        const HSLAPixel &pixel = png.getPixel(x, y);
+        hash ^= hashFunction(pixel.h);
+        hash ^= hashFunction(pixel.s);
         hash ^= hashFunction(pixel.l);
-        hash ^= hashFunction(pixel.u);
-        hash ^= hashFunction(pixel.v);
         hash ^= hashFunction(pixel.a);
       }
     }
