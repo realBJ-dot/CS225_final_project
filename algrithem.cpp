@@ -6,10 +6,8 @@
 #include <vector>
 #include <queue>
 
-std::vector<Vertex> BFS_Traversal(Graph& g_) {
+std::vector<Vertex> BFS_Traversal(Graph& g_, Vertex rand_Vertex) {
     std::vector<Vertex> toReturn;
-
-    Vertex rand_Vertex = g_.getStartingVertex();
     //int size = g_.getVertices().size();
     std::vector<Vertex> visited;
     std::queue<Vertex> queue_;
