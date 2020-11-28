@@ -43,15 +43,15 @@ class Vertex {
             latitude_ = latitude;
         }
         void setLongtitude(double longitude) {
-            longitude_ = longitude_;
+            longitude_ = longitude;
         }
         bool visited() {
             return visited_;
         }
-        bool visit() {
+        void visit() {
             visited_ = true;
         }
-        bool unvisited() {
+        void unvisited() {
             visited_ = false;
         }
         bool operator==(Vertex& other) const {
