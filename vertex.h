@@ -31,14 +31,30 @@ class Vertex {
             id_ = id;
             latitude_ = 0;
             longitude_ = 0;
+            visited_ = false;
         }
-        Vertex(string id, int latitude, int longitude) {
+        Vertex(string id, double latitude, double longitude) {
             id_ = id;
             latitude_ = latitude;
             longitude_ = longitude;
+            visited_ = false;
         }
-        bool operator==(Vertex& other) const
-        {
+        void setLatitude(double latitude) {
+            latitude_ = latitude;
+        }
+        void setLongtitude(double longitude) {
+            longitude_ = longitude_;
+        }
+        bool visited() {
+            return visited_;
+        }
+        bool visit() {
+            visited_ = true;
+        }
+        bool unvisited() {
+            visited_ = false;
+        }
+        bool operator==(Vertex& other) const {
             if (this -> id_ != other.id_) {
                 return false;
             }
@@ -50,8 +66,7 @@ class Vertex {
             }
             return true;
         }
-        bool operator!=(Vertex& other) const
-        {
+        bool operator!=(Vertex& other) const {
             if (this -> id_ == other.id_) {
                 return false;
             }
@@ -63,8 +78,7 @@ class Vertex {
             }
             return true;
         }
-        bool operator<(const Vertex& other) const
-        {
+        bool operator<(const Vertex& other) const {
             if (this -> latitude_ < other.latitude_ && this -> longitude_ < other.longitude_) {
                 return true;
             }
@@ -74,4 +88,5 @@ class Vertex {
         string id_;
         double latitude_;
         double longitude_;
+        bool visited_;
 };
