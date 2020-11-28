@@ -7,10 +7,9 @@
 
 #include <string>
 #include <limits.h>
+#include "vertex.h"
 
 using std::string;
-
-typedef string Vertex;
 
 /**
  * Represents an edge in a graph; used by the Graph class.

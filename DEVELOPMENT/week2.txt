@@ -1,1 +1,2 @@
-
+week 2, Nov 25th
+we copied the graph.cpp, edge.h, graoh.h files from the lab_ml into our repository as we are going to use them as basis for our graph project. 

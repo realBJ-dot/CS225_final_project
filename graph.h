@@ -21,7 +21,7 @@
 #pragma once
 
 #include <list>
-#include <unordered_map>
+#include <map>
 #include <utility>
 #include <algorithm>
 #include <string>
@@ -47,7 +47,6 @@ using std::to_string;
 using std::vector;
 using std::pair;
 using std::make_pair;
-using std::unordered_map;
 
 
 /**
@@ -235,7 +234,7 @@ public:
     const static string InvalidLabel;
 
 private:
-    mutable unordered_map<Vertex, unordered_map<Vertex, Edge>> adjacency_list;
+    mutable std::map<Vertex, std::map<Vertex, Edge>> adjacency_list;
 
     bool weighted;
     bool directed;
