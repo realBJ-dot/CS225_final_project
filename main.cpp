@@ -1,7 +1,35 @@
 #include "edge.h"
 #include "graph.h"
+#include <fstream>
+
+using std::ifstream;
 
 int main() {
   std::cout << "test main file" << std::endl;
-  return 0;
+  int i = 0;
+  ifstream wordsFile("data/airports.dat");
+  string word;
+  if (wordsFile.is_open()) {
+      /* Reads a line from `wordsFile` into `word` until the file ends. */
+      while (getline(wordsFile, word)) {
+          if (i > 2) {
+            break;
+          }
+          std::string part;
+          std::istringstream ss(word);
+          int counter = 0;
+          while(std::getline(ss, part, ',')) {
+             if (counter == 0) {
+               std::cout << "id: " << part << std::endl;
+             } else if (counter == 6) {
+               std::cout << "latitude: " << part << std::endl;
+             } else if (counter == 7) {
+               std::cout << "longitude: " << part << std::endl;
+             }
+             counter++;
+          }
+          i++;
+      }
+  }
+    return 0;
 }
