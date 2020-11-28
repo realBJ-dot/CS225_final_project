@@ -156,7 +156,7 @@ bool Graph::edgeExists(Vertex source, Vertex destination) const
 Edge Graph::setEdgeLabel(Vertex source, Vertex destination, string label)
 {
     if (assertEdgeExists(source, destination, __func__) == false)
-        return Edge(Vertex("invalid"), Vertex("invalid"));
+        error("edge does not exist");
     Edge e = adjacency_list[source][destination];
     Edge new_edge(source, destination, e.getWeight(), label);
     adjacency_list[source][destination] = new_edge;
@@ -256,7 +256,7 @@ bool Graph::insertEdge(Vertex source, Vertex destination)
 Edge Graph::removeEdge(Vertex source, Vertex destination)
 {
     if(assertEdgeExists(source, destination, __func__) == false)
-        return Edge(Vertex("invalid"), Vertex("invalid"));
+        error("edge does not exist");
     Edge e = adjacency_list[source][destination];
     adjacency_list[source].erase(destination);
     // if undirected, remove the corresponding edge
@@ -271,7 +271,7 @@ Edge Graph::removeEdge(Vertex source, Vertex destination)
 Edge Graph::setEdgeWeight(Vertex source, Vertex destination, int weight)
 {
     if (assertEdgeExists(source, destination, __func__) == false)
-        return Edge(Vertex("invalid"), Vertex("invalid"));
+        error("edge does not exist");
     Edge e = adjacency_list[source][destination];
     //std::cout << "setting weight: " << weight << std::endl;
     Edge new_edge(source, destination, weight, e.getLabel());
@@ -341,16 +341,6 @@ void Graph::clear()
 void Graph::error(string message) const
 {
     cerr << "\033[1;31m[Graph Error]\033[0m " + message << endl;
-}
-
-/**
- * Creates a name for snapshots of the graph.
- * @param title - the name to save the snapshots as
- */
-void Graph::initSnapshot(string title)
-{
-    picNum = 0;
-    picName = title;
 }
 
 /**
