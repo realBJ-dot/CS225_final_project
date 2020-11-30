@@ -54,6 +54,9 @@ class Vertex {
         void unvisited() {
             visited_ = false;
         }
+        std::string getId() {
+            return id_;
+        }
         bool operator==(Vertex& other) const {
             if (this -> id_ != other.id_) {
                 return false;
