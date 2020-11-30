@@ -1,6 +1,6 @@
 # Executable names:
 EXE = graph
-# TEST = test
+TEST = test
 
 # Add all object files needed for compiling:
 EXE_OBJ = main.o
