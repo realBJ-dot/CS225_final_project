@@ -7,6 +7,7 @@
 
 #include <string>
 
+
 using std::string;
 
 
@@ -49,6 +50,7 @@ class Vertex {
             return visited_;
         }
         void visit() {
+            std::cout << "called visited with " << id_ << std::endl;
             visited_ = true;
         }
         void unvisited() {
@@ -57,7 +59,20 @@ class Vertex {
         std::string getId() {
             return id_;
         }
-        bool operator==(Vertex& other) const {
+        Vertex(const Vertex& other) {
+            id_ = other.id_;
+            latitude_ = other.latitude_;
+            longitude_ = other.longitude_;
+        }
+        Vertex& operator=(const Vertex& other) {
+            if (this != &other) {
+                id_ = other.id_;
+                latitude_ = other.latitude_;
+                longitude_ = other.longitude_;
+            }
+            return *this;
+        }
+        bool operator==(const Vertex& other) const {
             if (this -> id_ != other.id_) {
                 return false;
             }
@@ -93,3 +108,5 @@ class Vertex {
         double longitude_;
         bool visited_;
 };
+
+#include "hash.cpp"

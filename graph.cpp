@@ -78,7 +78,7 @@ vector<Vertex> Graph::getAdjacent(Vertex source) const
     else
     {
         vector<Vertex> vertex_list;
-        std::map <Vertex, Edge> & map = adjacency_list[source];
+        unordered_map <Vertex, Edge> & map = adjacency_list[source];
         for (auto it = map.begin(); it != map.end(); it++)
         {
             vertex_list.push_back(it->first);
@@ -96,7 +96,6 @@ Vertex Graph::getStartingVertex() const
 vector<Vertex> Graph::getVertices() const
 {
     vector<Vertex> ret;
-
     for(auto it = adjacency_list.begin(); it != adjacency_list.end(); it++)
     {
         ret.push_back(it->first);
@@ -192,7 +191,7 @@ void Graph::insertVertex(Vertex v)
     // will overwrite if old stuff was there
     removeVertex(v);
     // make it empty again
-    adjacency_list[v] = std::map<Vertex, Edge>();
+    adjacency_list[v] = unordered_map<Vertex, Edge>();
 }
 
 
@@ -201,6 +200,7 @@ Vertex Graph::removeVertex(Vertex v)
 
     if (adjacency_list.find(v) != adjacency_list.end())
     {
+        std::cout << "found" << std::endl;
         if(!directed){
             for (auto it = adjacency_list[v].begin(); it != adjacency_list[v].end(); it++)
             {
@@ -237,7 +237,7 @@ bool Graph::insertEdge(Vertex source, Vertex destination)
 
     if(adjacency_list.find(source)==adjacency_list.end())
     {
-        adjacency_list[source] = std::map<Vertex, Edge>();
+        adjacency_list[source] = unordered_map<Vertex, Edge>();
     }
         //source vertex exists
     adjacency_list[source][destination] = Edge(source, destination);
@@ -245,7 +245,7 @@ bool Graph::insertEdge(Vertex source, Vertex destination)
     {
         if(adjacency_list.find(destination)== adjacency_list.end())
         {
-            adjacency_list[destination] = std::map<Vertex, Edge>();
+            adjacency_list[destination] = unordered_map<Vertex, Edge>();
         }
         adjacency_list[destination][source] = Edge(source, destination);
     }

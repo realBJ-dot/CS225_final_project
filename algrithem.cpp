@@ -7,34 +7,28 @@
 #include <queue>
 
 
-std::vector<Vertex> BFS_Traversal(Graph& g_, Vertex rand_Vertex) {
-    
+std::vector<Vertex> BFS_Traversal(Graph& g_, Vertex start_vertex) {
+    std::cout << "new test" << std::endl;
     std::vector<Vertex> toReturn;
-    
-    std::vector<Vertex> visited;
     std::queue<Vertex> queue_;
-    vector<Vertex> all_vertex = g_.getVertices();
-    for (Vertex& s : all_vertex) {
-        if (!s.visited()) {
-            queue_.push(s);
-        } else {
-            visited.push_back(s);
-        }
-    }
-    visited.push_back(rand_Vertex);
-    queue_.push(rand_Vertex);
-    vector<Vertex> neighbors = g_.getAdjacent(rand_Vertex);
+    queue_.push(start_vertex);
+    start_vertex.visit();
+    std::cout << g_.getVertices()[2].getId() << " visited: " << g_.getVertices()[3].visited() << std::endl;
     while (!queue_.empty()) {
         auto temp_ = queue_.front();
         queue_.pop();
-        temp_.visit();
         toReturn.push_back(temp_);
-        for (auto n : neighbors) {
+        for (Vertex& n : g_.getAdjacent(temp_)) {
+            std::cout << "neighbor of " << temp_.getId() << ": " << n.getId() << std::endl;
+            std::cout << g_.getVertices()[2].getId() << " visited: " << g_.getVertices()[3].visited() << std::endl;
             if (!n.visited()) {
+                std::cout << "visit " << n.getId() << std::endl;
                 queue_.push(n);
-                visited.push_back(n);
+                n.visit();
             }
         }
     }
+    std::cout << g_.getVertices()[4].getId() << " visited: " << g_.getVertices()[4].visited() << std::endl;
+    std::cout << "node: " << toReturn.size() << std::endl;
     return toReturn;
 }
