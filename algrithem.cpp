@@ -30,3 +30,6 @@ std::vector<Vertex> BFS_Traversal(Graph& g_, Vertex start_vertex) {
     }
     return toReturn;
 }
+std::vector<Vertex> DFS_Traversal(Graph& g_, Vertex start_vertex) {
+    return vector<Vertex>();
+}
