@@ -10,13 +10,14 @@
 #include "../vertex.h"
 #include "../algorithms.cpp"
 
+// function that generates test graphs
 vector<Graph*> getTestGraph() {
     vector<Graph*> g;
     Graph* g1 = new Graph(false, true);
     Graph* g2 = new Graph(false, true);
     Graph* g3 = new Graph(false, true);
     
-    //g1 is a graph with three vertices, it's actaully jsut a list. This is to test the simple functionality of the algorithm.
+    // g1 is a graph with three vertices. This is to test the simple functionality of the algorithm.
     Vertex g1v1 = Vertex(to_string(0));
     Vertex g1v2 = Vertex(to_string(1));
     Vertex g1v3 = Vertex(to_string(2));
@@ -27,7 +28,7 @@ vector<Graph*> getTestGraph() {
     g1 -> insertEdge(g1v2, g1v3);
     g.push_back(g1);
 
-    //g2 is a simple graph with several vertices and directed edges. expected 0 1 5 4 2 3
+    // g2 is a simple graph with 6 vertices and directed edges. 
     Vertex g2v0 = Vertex(to_string(0));
     Vertex g2v1 = Vertex(to_string(1));
     Vertex g2v2 = Vertex(to_string(2));
@@ -49,7 +50,7 @@ vector<Graph*> getTestGraph() {
     g2 -> insertEdge(g2v4, g2v3);
     g.push_back(g2);
 
-    //g3 is a simple graph with several vertices and directed edges.
+    // g3 is a simple graph with 8 vertices and directed edges.
     Vertex g3v0 = Vertex(to_string(0));
     Vertex g3v1 = Vertex(to_string(1));
     Vertex g3v2 = Vertex(to_string(2));
@@ -79,6 +80,13 @@ vector<Graph*> getTestGraph() {
     return g;
 }
 
+// function that prevents memory leak
+void clear(vector<Graph*> g) {
+    for (size_t i = 0; i < g.size(); i++) {
+        delete g[i];
+    }
+}
+
 
 TEST_CASE("BFS: simple graph with three nodes, expected 0 1 2") {
     vector<Graph*> g = getTestGraph();
@@ -86,12 +94,7 @@ TEST_CASE("BFS: simple graph with three nodes, expected 0 1 2") {
     REQUIRE ( v1[0].getId() == to_string(0) );
     REQUIRE ( v1[1].getId() == to_string(1) );
     REQUIRE ( v1[2].getId() == to_string(2) );
-    delete g[0];
-    g[0] = NULL;
-    delete g[1];
-    g[1] = NULL;
-    delete g[2];
-    g[2] = NULL;
+    clear(g);
 }
 
 TEST_CASE("BFS: graph with six nodes, expected 0 1 5 4 2 3") {
@@ -103,12 +106,7 @@ TEST_CASE("BFS: graph with six nodes, expected 0 1 5 4 2 3") {
     REQUIRE ( v1[3].getId() == to_string(4) );
     REQUIRE ( v1[4].getId() == to_string(2) );
     REQUIRE ( v1[5].getId() == to_string(3) );
-    delete g[0];
-    g[0] = NULL;
-    delete g[1];
-    g[1] = NULL;
-    delete g[2];
-    g[2] = NULL;
+    clear(g);
 }
 
 TEST_CASE("BFS: graph with 8 nodes, expected 0 3 2 6 4 1 7 5") {
@@ -122,15 +120,10 @@ TEST_CASE("BFS: graph with 8 nodes, expected 0 3 2 6 4 1 7 5") {
     REQUIRE ( v1[5].getId() == to_string(1) );
     REQUIRE ( v1[6].getId() == to_string(7) );
     REQUIRE ( v1[7].getId() == to_string(5) );
-    delete g[0];
-    g[0] = NULL;
-    delete g[1];
-    g[1] = NULL;
-    delete g[2];
-    g[2] = NULL;
+    clear(g);
 }
 
-//////////////////////DFS////////////////////
+//////////////////////DFS test cases////////////////////
 TEST_CASE("DFS:simple graph with three nodes, expected 0 1 2") {
     vector<Graph*> g = getTestGraph();
     vector<Vertex> v1 = DFS_Traversal(*g[0], Vertex(to_string(0)));
@@ -154,12 +147,7 @@ TEST_CASE("DFS:graph with six nodes, expected 0 1 2 4 3 5") {
     REQUIRE ( v1[3].getId() == to_string(4) );
     REQUIRE ( v1[4].getId() == to_string(3) );
     REQUIRE ( v1[5].getId() == to_string(5) );
-    delete g[0];
-    g[0] = NULL;
-    delete g[1];
-    g[1] = NULL;
-    delete g[2];
-    g[2] = NULL;
+    clear(g);
 }
 
 TEST_CASE("DFS:graph with 8 nodes, expected 0 2 1 3 4 5 6 7") {
@@ -173,14 +161,8 @@ TEST_CASE("DFS:graph with 8 nodes, expected 0 2 1 3 4 5 6 7") {
     REQUIRE ( v1[5].getId() == to_string(5) );
     REQUIRE ( v1[6].getId() == to_string(6) );
     REQUIRE ( v1[7].getId() == to_string(7) );
-    delete g[0];
-    g[0] = NULL;
-    delete g[1];
-    g[1] = NULL;
-    delete g[2];
-    g[2] = NULL;
+    clear(g);
 }
-
 
 
 

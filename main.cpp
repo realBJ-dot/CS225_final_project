@@ -6,6 +6,10 @@ using std::ifstream;
 
 int main() {
   std::cout << "test main file" << std::endl;
+  /**
+   * load airport data. use i as a counter to keep track of different part of 
+   * airport information
+   */
   int i = 0;
   ifstream wordsFile("data/airports.dat");
   string word;
@@ -18,6 +22,7 @@ int main() {
           std::string part;
           std::istringstream ss(word);
           int counter = 0;
+          /* split single line on ','. */
           while(std::getline(ss, part, ',')) {
              if (counter == 0) {
                std::cout << "id: " << part << std::endl;

@@ -12,10 +12,8 @@ using std::string;
 
 
 /**
- * Represents an edge in a graph; used by the Graph class.
- *
- * @author Sean Massung
- * @date Spring 2012
+ * Represents an Vertex in a graph; used by the Graph class.
+ * included latitude and longitude variable for working with the openflight dataset
  */
 class Vertex {
     public:
@@ -28,11 +26,15 @@ class Vertex {
         int getLongtitude() const{
             return longitude_;
         }
+        // constructor based on id of Vertex
+        // can be used for other datasets
         Vertex(string id) {
             id_ = id;
             latitude_ = 0;
             longitude_ = 0;
         }
+        // constructor based on id, latitude and longitude of Vertex
+        // used mainly for openflight dataset
         Vertex(string id, double latitude, double longitude) {
             id_ = id;
             latitude_ = latitude;
@@ -44,9 +46,7 @@ class Vertex {
         void setLongtitude(double longitude) {
             longitude_ = longitude;
         }
-        std::string getId() {
-            return id_;
-        }
+        // copy constructor
         Vertex(const Vertex& other) {
             id_ = other.id_;
             latitude_ = other.latitude_;
@@ -84,6 +84,8 @@ class Vertex {
             }
             return true;
         }
+        // < operator
+        // written for use of map on vertex
         bool operator<(const Vertex& other) const {
             if (this -> latitude_ < other.latitude_ && this -> longitude_ < other.longitude_) {
                 return true;

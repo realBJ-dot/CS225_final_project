@@ -1,5 +1,10 @@
 #include "vertex.h"
 
+/**
+ * simple hash function for Vertex
+ * use std::hash on the id of Vertex
+ * written for unordered_map of Vertex used in graph
+ */
 namespace std
 {
     template <>

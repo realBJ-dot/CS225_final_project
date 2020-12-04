@@ -1,4 +1,9 @@
 
+/** 
+ * most part are from lab_ml
+ * deleted unnecessary part and modified for Vertex class
+ */
+
 #include "graph.h"
 
 const int Graph::InvalidWeight = INT_MIN;
@@ -273,7 +278,6 @@ Edge Graph::setEdgeWeight(Vertex source, Vertex destination, int weight)
     if (assertEdgeExists(source, destination, __func__) == false)
         error("edge does not exist");
     Edge e = adjacency_list[source][destination];
-    //std::cout << "setting weight: " << weight << std::endl;
     Edge new_edge(source, destination, weight, e.getLabel());
     adjacency_list[source][destination] = new_edge;
 
