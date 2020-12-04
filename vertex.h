@@ -20,10 +20,10 @@ class Vertex {
         string getId() const{
             return id_;
         }
-        int getLatitude() const{
+        float getLatitude() const{
             return latitude_;
         }
-        int getLongtitude() const{
+        float getLongtitude() const{
             return longitude_;
         }
         // constructor based on id of Vertex
@@ -35,15 +35,15 @@ class Vertex {
         }
         // constructor based on id, latitude and longitude of Vertex
         // used mainly for openflight dataset
-        Vertex(string id, double latitude, double longitude) {
+        Vertex(string id, float latitude, float longitude) {
             id_ = id;
             latitude_ = latitude;
             longitude_ = longitude;
         }
-        void setLatitude(double latitude) {
+        void setLatitude(float latitude) {
             latitude_ = latitude;
         }
-        void setLongtitude(double longitude) {
+        void setLongtitude(float longitude) {
             longitude_ = longitude;
         }
         // copy constructor
@@ -94,8 +94,8 @@ class Vertex {
         }
     private:
         string id_;
-        double latitude_;
-        double longitude_;
+        float latitude_;
+        float longitude_;
 };
 
 #include "hash.cpp"
