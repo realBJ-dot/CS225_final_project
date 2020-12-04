@@ -32,29 +32,17 @@ class Vertex {
             id_ = id;
             latitude_ = 0;
             longitude_ = 0;
-            visited_ = false;
         }
         Vertex(string id, double latitude, double longitude) {
             id_ = id;
             latitude_ = latitude;
             longitude_ = longitude;
-            visited_ = false;
         }
         void setLatitude(double latitude) {
             latitude_ = latitude;
         }
         void setLongtitude(double longitude) {
             longitude_ = longitude;
-        }
-        bool visited() {
-            return visited_;
-        }
-        void visit() {
-            std::cout << "called visited with " << id_ << std::endl;
-            visited_ = true;
-        }
-        void unvisited() {
-            visited_ = false;
         }
         std::string getId() {
             return id_;
@@ -106,7 +94,6 @@ class Vertex {
         string id_;
         double latitude_;
         double longitude_;
-        bool visited_;
 };
 
 #include "hash.cpp"
