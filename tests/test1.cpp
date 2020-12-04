@@ -8,7 +8,7 @@
 #include "../graph.h"
 #include "../edge.h"
 #include "../vertex.h"
-#include "../algrithem.cpp"
+#include "../algorithms.cpp"
 
 vector<Graph*> getTestGraph() {
     vector<Graph*> g;
