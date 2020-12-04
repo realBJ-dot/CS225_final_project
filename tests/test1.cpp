@@ -81,7 +81,7 @@ vector<Graph*> getTestGraph() {
 }
 
 
-TEST_CASE("simple graph with three nodes, expected 0 1 2") {
+TEST_CASE("BFS:simple graph with three nodes, expected 0 1 2") {
     vector<Graph*> g = getTestGraph();
     std::cout << "num of vertexs: " << g[0] -> getVertices().size() << std::endl;
     vector<Vertex> v1 = BFS_Traversal(*g[0], Vertex(to_string(0)));
@@ -90,7 +90,7 @@ TEST_CASE("simple graph with three nodes, expected 0 1 2") {
     REQUIRE ( v1[2].getId() == to_string(2) );
 }
 
-TEST_CASE("graph with six nodes, expected 0 1 2 4 5 3") {
+TEST_CASE("BFS:graph with six nodes, expected 0 1 2 4 5 3") {
     vector<Graph*> g = getTestGraph();
     vector<Vertex> v1 = BFS_Traversal(*g[1], Vertex(to_string(0)));
     REQUIRE ( v1[0].getId() == to_string(0) );
@@ -101,7 +101,7 @@ TEST_CASE("graph with six nodes, expected 0 1 2 4 5 3") {
     REQUIRE ( v1[5].getId() == to_string(3) );
 }
 
-TEST_CASE("graph with 8 nodes, expected 0 2 3 1 4 6 5 7") {
+TEST_CASE("BFS:graph with 8 nodes, expected 0 2 3 1 4 6 5 7") {
     vector<Graph*> g = getTestGraph();
     vector<Vertex> v1 = BFS_Traversal(*g[2], Vertex(to_string(0)));
     REQUIRE ( v1[0].getId() == to_string(0) );
@@ -113,6 +113,40 @@ TEST_CASE("graph with 8 nodes, expected 0 2 3 1 4 6 5 7") {
     REQUIRE ( v1[6].getId() == to_string(5) );
     REQUIRE ( v1[7].getId() == to_string(7) );
 }
+
+//////////////////////DFS////////////////////
+TEST_CASE("DFS:simple graph with three nodes, expected 0 1 2") {
+    vector<Graph*> g = getTestGraph();
+    vector<Vertex> v1 = DFS_Traversal(*g[0], Vertex(to_string(0)));
+    REQUIRE ( v1[0].getId() == to_string(0) );
+    REQUIRE ( v1[1].getId() == to_string(1) );
+    REQUIRE ( v1[2].getId() == to_string(2) );
+}
+
+TEST_CASE("DFS:graph with six nodes, expected 0 1 2 4 3 5") {
+    vector<Graph*> g = getTestGraph();
+    vector<Vertex> v1 = DFS_Traversal(*g[1], Vertex(to_string(0)));
+    REQUIRE ( v1[0].getId() == to_string(0) );
+    REQUIRE ( v1[1].getId() == to_string(1) );
+    REQUIRE ( v1[2].getId() == to_string(2) );
+    REQUIRE ( v1[3].getId() == to_string(4) );
+    REQUIRE ( v1[4].getId() == to_string(3) );
+    REQUIRE ( v1[5].getId() == to_string(5) );
+}
+
+TEST_CASE("DFS:graph with 8 nodes, expected 0 2 1 5 4 3 6 7") {
+    vector<Graph*> g = getTestGraph();
+    vector<Vertex> v1 = DFS_Traversal(*g[2], Vertex(to_string(0)));
+    REQUIRE ( v1[0].getId() == to_string(0) );
+    REQUIRE ( v1[1].getId() == to_string(2) );
+    REQUIRE ( v1[2].getId() == to_string(1) );
+    REQUIRE ( v1[3].getId() == to_string(5) );
+    REQUIRE ( v1[4].getId() == to_string(4) );
+    REQUIRE ( v1[5].getId() == to_string(3) );
+    REQUIRE ( v1[6].getId() == to_string(6) );
+    REQUIRE ( v1[7].getId() == to_string(7) );
+}
+
 
 
 
