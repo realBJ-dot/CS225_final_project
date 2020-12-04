@@ -8,20 +8,6 @@ int main() {
   std::cout << "test main file" << std::endl;
   // process the dataset to graph
   Graph g_ = Graph(true, true);
-  auto hash1 = std::hash<Vertex>() (Vertex("1"));
-  auto hash2 = std::hash<Vertex>() (Vertex("1", 0.1, 0.1));
-  if (hash1 == hash2) {
-    std::cout << "same hash value" << std::endl;
-  } else {
-    std::cout << "different hash value" << std::endl;
-  }
-  unordered_map<Vertex, int> m;
-  m.insert(std::pair<Vertex, int> (Vertex("1"), 0));
-  if (m.find(Vertex("1", 0.1, 0.1)) == m.end()) {
-    std::cout << "not found" << std::endl;
-  } else {
-    std::cout << "found" << std::endl;
-  }
   /**
    * load airport data. use i as a counter to keep track of different part of 
    * airport information
@@ -42,14 +28,10 @@ int main() {
            */
           while(std::getline(ss, part, ',')) {
              if (counter == 0) {
-               // std::cout << "id: " << part << std::endl;
                id = part;
              } else if (counter == 6) {
-               // std::cout << "latitude: " << part << std::endl;
                latitude = atof(part.c_str());
-               // std::cout << latitude << std::endl;
              } else if (counter == 7) {
-               // std::cout << "longitude: " << part << std::endl;
                longitude = atof(part.c_str());
              }
              counter++;
@@ -80,10 +62,8 @@ int main() {
            */
           while(std::getline(ss_, part_, ',')) {
             if (counter_ == 3) {
-              // std::cout << "source: " << part_ << std::endl;
               source = part_;
             } else if (counter_ == 5) {
-              // std::cout << "destination: " << part_ << std::endl;
               destination = part_;
             }
             counter_++;  

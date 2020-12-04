@@ -64,12 +64,6 @@ class Vertex {
             if (this -> id_ != other.id_) {
                 return false;
             }
-            if (this -> latitude_ != other.latitude_) {
-                return false;
-            }
-            if (this -> longitude_ != other.longitude_) {
-                return false;
-            }
             return true;
         }
         bool operator!=(Vertex& other) const {
