@@ -30,13 +30,42 @@ int main() {
                id = part;
              } else if (counter == 6) {
                // std::cout << "latitude: " << part << std::endl;
-               latitude = std::stod(part);
+               latitude = atof(word.c_str());
              } else if (counter == 7) {
                // std::cout << "longitude: " << part << std::endl;
-               longitude = std::stod(part);
+               longitude = atof(word.c_str());
              }
              counter++;
           }
+      }
+  }
+  /**
+   * load route data. use i as a counter to keep track of different part of 
+   * routes information
+   */
+  ifstream wordsFile_("data/routes.dat");
+  string word_;
+  if (wordsFile_.is_open()) {
+      /* Reads a line from `wordsFile` into `word` until the file ends. */
+      while (getline(wordsFile_, word_)) {
+          std::string part_;
+          std::istringstream ss_(word_);
+          int counter_ = 0;
+          string source;
+          string destination;
+          /** split single line on ','.
+          * process information of a single route 
+           */
+          while(std::getline(ss_, part_, ',')) {
+            if (counter_ == 3) {
+              // std::cout << "source: " << part_ << std::endl;
+              source = part_;
+            } else if (counter_ == 5) {
+              // std::cout << "destination: " << part_ << std::endl;
+              destination = part_;
+            }
+            counter_++;  
+        }
       }
   }
   
