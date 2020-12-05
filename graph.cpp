@@ -223,6 +223,8 @@ bool Graph::insertEdge(Vertex source, Vertex destination)
 {   
     if (adjacency_list.find(source) == adjacency_list.end()  || 
         adjacency_list.find(destination) == adjacency_list.end()) {
+            // dataset mismatch, the destination/source airport is only in the route dataset
+            // not in the airport dataset
             return false;
         }
     if(adjacency_list.find(source)!= adjacency_list.end() 
