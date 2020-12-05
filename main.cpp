@@ -40,15 +40,12 @@ int main() {
           g_.insertVertex(v_);
       }
   }
-  auto vertices = g_.getVertices();
-  std::cout << vertices.size() << std::endl;
   /**
    * load route data. use i as a counter to keep track of different part of 
    * routes information
    */
   ifstream wordsFile_("data/routes.dat");
   string word_;
-  int insert_count = 0;
   if (wordsFile_.is_open()) {
       /* Reads a line from `wordsFile` into `word` until the file ends. */
       while (getline(wordsFile_, word_)) {
@@ -68,17 +65,9 @@ int main() {
             }
             counter_++;  
           }
-          bool insert = g_.insertEdge(Vertex(source), Vertex(destination));
-          if (insert) {
-            insert_count++;
-          }
+          g_.insertEdge(Vertex(source), Vertex(destination));
       }
   }
-  vertices = g_.getVertices();
-  auto edges = g_.getEdges();
-  std::cout << vertices.size() << std::endl;
-  std::cout << insert_count << std::endl;
-  std::cout << edges.size() << std::endl;
   
   /**
    * collect user input to decided which algorithm to run

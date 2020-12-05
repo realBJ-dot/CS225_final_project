@@ -123,27 +123,15 @@ vector<Edge> Graph::getEdges() const
         return vector<Edge>();
 
     vector<Edge> ret;
-    set<pair<Vertex, Vertex>> seen;
 
     for (auto it = adjacency_list.begin(); it != adjacency_list.end(); it++)
     {
         Vertex source = it->first;
         for (auto its = adjacency_list[source].begin(); its != adjacency_list[source].end(); its++)
         {
-            Vertex destination = its->first;
-            if(seen.find(make_pair(source, destination)) == seen.end())
-            {
-                //this pair is never added to seen
-                ret.push_back(its->second);
-                seen.insert(make_pair(source,destination));
-                if(!directed)
-                {
-                    seen.insert(make_pair(destination, source));
-                }
-            }
+            ret.push_back(its->second);
         }
     }
-
     return ret;
 }
 
