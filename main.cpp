@@ -1,6 +1,7 @@
 #include "edge.h"
 #include "graph.h"
 #include <fstream>
+#include "util.h"
 
 using std::ifstream;
 
@@ -39,6 +40,7 @@ int main() {
           Vertex v_ = Vertex(id, latitude, longitude);
           g_.insertVertex(v_);
       }
+      
   }
   /**
    * load route data. use i as a counter to keep track of different part of 
@@ -65,9 +67,29 @@ int main() {
             }
             counter_++;  
           }
-          g_.insertEdge(Vertex(source), Vertex(destination));
+          Vertex s = Vertex(source);
+          Vertex d = Vertex(destination);
+          g_.insertEdge(s, d);
+          
+          
+          
+          
+          
       }
   }
+
+
+  /*set weight of edges as of distance*/
+  for (auto e : g_.getEdges()) {
+    double lat1 = e.source.getLatitude();
+    double lng1 = e.source.getLongitude();
+    double lat2 = e.dest.getLatitude();
+    double lng2 = e.dest.getLongitude();
+    double weight = distance_helper(lat1, lng1, lat2, lng2);
+    g_.setEdgeWeight(e.source, e.dest, weight);
+  }
+
+
   
   /**
    * collect user input to decided which algorithm to run

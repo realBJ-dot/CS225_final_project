@@ -23,15 +23,17 @@ class Vertex {
         float getLatitude() const{
             return latitude_;
         }
-        float getLongtitude() const{
+        float getLongitude() const{
             return longitude_;
         }
         // constructor based on id of Vertex
         // can be used for other datasets
         Vertex(string id) {
-            id_ = id;
-            latitude_ = 0;
-            longitude_ = 0;
+            if (id.length() != 0) { 
+                id_ = id;
+                latitude_ = 0;
+                longitude_ = 0;
+            }
         }
         // constructor based on id, latitude and longitude of Vertex
         // used mainly for openflight dataset
@@ -43,7 +45,7 @@ class Vertex {
         void setLatitude(float latitude) {
             latitude_ = latitude;
         }
-        void setLongtitude(float longitude) {
+        void setLongitude(float longitude) {
             longitude_ = longitude;
         }
         // copy constructor
