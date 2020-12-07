@@ -69,25 +69,24 @@ int main() {
           }
           Vertex s = Vertex(source);
           Vertex d = Vertex(destination);
-          g_.insertEdge(s, d);
-          
-          
-          
-          
-          
+          g_.insertEdge(s, d);     
       }
   }
 
-
+  
   /*set weight of edges as of distance*/
   for (auto e : g_.getEdges()) {
-    double lat1 = e.source.getLatitude();
-    double lng1 = e.source.getLongitude();
-    double lat2 = e.dest.getLatitude();
-    double lng2 = e.dest.getLongitude();
-    double weight = distance_helper(lat1, lng1, lat2, lng2);
+    float lat1 = e.source.getLatitude();
+    
+    float lng1 = e.source.getLongitude();
+    float lat2 = e.dest.getLatitude();
+    float lng2 = e.dest.getLongitude();
+    float weight = distance_helper(lat1, lng1, lat2, lng2);
+    
     g_.setEdgeWeight(e.source, e.dest, weight);
+    //std::cout<<e.getWeight()<<std::endl;
   }
+  g_.print();
 
 
   

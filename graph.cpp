@@ -239,14 +239,14 @@ bool Graph::insertEdge(Vertex source, Vertex destination)
         adjacency_list[source] = unordered_map<Vertex, Edge>();
     }
         //source vertex exists
-    adjacency_list[source][destination] = Edge(source, destination);
+    adjacency_list[source][destination] = Edge(adjacency_list.find(source)->first, adjacency_list.find(destination)->first);
     if(!directed)
     {
         if(adjacency_list.find(destination)== adjacency_list.end())
         {
             adjacency_list[destination] = unordered_map<Vertex, Edge>();
         }
-        adjacency_list[destination][source] = Edge(source, destination);
+        adjacency_list[destination][source] = Edge(adjacency_list.find(source)->first, adjacency_list.find(destination)->first);
     }
     
     return true;
