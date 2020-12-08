@@ -7,8 +7,12 @@
 #include <queue>
 #include <map>
 #include <stack>
+#include <utility>
+
+#include "cs225/PNG.h"
 
 using std::vector;
+using cs225::PNG;
 
 /**
  * helper function for BFS traversal
@@ -105,4 +109,60 @@ vector<Vertex> DFS(Graph& g_) {
 }
 
 
+void visualization(Graph& g_) {
+    PNG p;
+    p.readFromFile("world-map.png");
+    /*
+    for (unsigned x = 0; x < p.width(); x++) {
+    for (unsigned y = 0; y < p.height(); y++) {
+        cs225::HSLAPixel & pixel_in = p.getPixel(x, y);
+        pixel_in.a = 1;
+        pixel_in.h = 0;
+        pixel_in.l = 0.5;
+        pixel_in.s = .5;
+    }
+    }
+    */
+    float lat0 = p.height() / 2;
+    float lng0 = p.width() / 2;
+    float lat_degree = p.height()/180;
+    float lng_degree = p.width()/360;
+    
+    vector<Vertex> v = g_.getVertices();
+    //vector<std::pair<float, float>> latlng;
+    for (auto e : v) {
+        //latlng.push_back(pair<float, float>(e.getLatitude(), e.getLongitude()));
+        float lat = e.getLatitude();
+        float lng = e.getLongitude();
+        float lat_p = (0-lat)*lat_degree + lat0;
+        float lng_p = lng*lng_degree + lng0;
+        if (lng_p == 2700 && lat_p == 2700) {
+            continue;
+        }
+        cs225::HSLAPixel & pixel = p.getPixel((int) lng_p, (int) lat_p);
+        pixel.h = 0;
+        pixel.a = 1;
+        pixel.l = 1;
+        pixel.s = .5;
+    }
+    for (int x = -180; x < 180; x += 30) {
+        for (unsigned y = 0; y < p.height(); y++) {
+            float xi = x*lng_degree + lng0;
+            cs225::HSLAPixel & pixel = p.getPixel((int) xi, (int) y);
+        pixel.h = 0;
+        pixel.a = 1;
+        pixel.l = 1;
+        pixel.s = .5;
+    }
+    }
+    /*for (int i = 0; i < 100; i++) {
+    cs225::HSLAPixel & pixel = p.getPixel((int) (-118.40799 * lng_degree + lng0 + i), (int) (-33.9425 * lat_degree + lat0));
 
+    pixel.h = 0;
+    pixel.a = 1;
+    pixel.l = 1;
+    pixel.s = .5;
+    }*/
+    
+    p.writeToFile("world_map_with_airports.png");
+}
