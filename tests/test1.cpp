@@ -20,6 +20,9 @@ vector<Graph*> getTestGraph() {
     Graph* g5 = new Graph(false, true);
     Graph* g6 = new Graph(false, true);
 
+    Graph* g7 = new Graph(true, true);
+    Graph* g8 = new Graph(true, true);
+
     Vertex v0 = Vertex("0");
     Vertex v1 = Vertex("1");
     Vertex v2 = Vertex("2");
@@ -111,6 +114,39 @@ vector<Graph*> getTestGraph() {
     g6 -> insertEdge(v2, v6);
     g6 -> insertEdge(v6, v7);
     g.push_back(g6);
+
+    //g7 is a weighted simple graph
+    g7 -> insertVertex(v2);
+    g7 -> insertVertex(v1);
+    g7 -> insertVertex(v0);
+    g7 -> insertEdge(v0, v1);
+    g7 -> setEdgeWeight(v0, v1, 1);
+    g7 -> insertEdge(v1, v2);
+    g7 -> setEdgeWeight(v1, v2, 2);
+    g.push_back(g7);
+
+    //g8 is a weighted graph with 8 nodes
+    g8 -> insertVertex(v7);
+    g8 -> insertVertex(v6);    
+    g8 -> insertVertex(v5);
+    g8 -> insertVertex(v4);
+    g8 -> insertVertex(v3);
+    g8 -> insertVertex(v2);
+    g8 -> insertVertex(v1);
+    g8 -> insertVertex(v0);
+    g8 -> insertEdge(v4, v1);
+    g8 -> setEdgeWeight(v4, v1, 2);
+    g8 -> insertEdge(v1, v5);
+    g8 -> setEdgeWeight(v1, v5, 5);
+    g8 -> insertEdge(v5, v4);
+    g8 -> setEdgeWeight(v5, v4, 3);
+    g8 -> insertEdge(v2, v7);
+    g8 -> setEdgeWeight(v2, v7, 1);
+    g8 -> insertEdge(v2, v6);
+    g8 -> setEdgeWeight(v2, v6, 0);
+    g8 -> insertEdge(v6, v7);
+    g8 -> setEdgeWeight(v6, v7, 0);
+    g.push_back(g8);
 
     return g;
 }
@@ -265,6 +301,32 @@ TEST_CASE("DFS: graph with 6 nodes and 2 connected components, expected 0 3 1 2 
 TEST_CASE("DFS: graph with 8 nodes and 4 connected components,  expected 0 1 5 4 2 7 6 3") {
     vector<Graph*> g = getTestGraph();
     vector<Vertex> v1 = DFS(*g[5]);
+    REQUIRE ( v1.size() == 8 ) ;
+    REQUIRE ( v1[0].getId() == "0" );
+    REQUIRE ( v1[1].getId() == "1" );
+    REQUIRE ( v1[2].getId() == "5" );
+    REQUIRE ( v1[3].getId() == "4" );
+    REQUIRE ( v1[4].getId() == "2" );
+    REQUIRE ( v1[5].getId() == "7" );
+    REQUIRE ( v1[6].getId() == "6" );
+    REQUIRE ( v1[7].getId() == "3" );
+    clear(g);
+}
+
+//////////weighted graph test cases////////////
+TEST_CASE("weighted BFS: graph with 3 nodes and two weighted edges, expected 0, 1, 2") {
+    vector<Graph*> g = getTestGraph();
+    vector<Vertex> v1 = BFS(*g[6]);
+    REQUIRE ( v1.size() == 3 ) ;
+    REQUIRE ( v1[0].getId() == "0" );
+    REQUIRE ( v1[1].getId() == "1" );
+    REQUIRE ( v1[2].getId() == "2" );
+    clear(g);
+}
+
+TEST_CASE("weighted DFS: graph with 8 nodes and 4 connected components") {
+    vector<Graph*> g = getTestGraph();
+    vector<Vertex> v1 = DFS(*g[7]);
     REQUIRE ( v1.size() == 8 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "1" );
