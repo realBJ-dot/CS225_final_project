@@ -1,7 +1,8 @@
 #include "edge.h"
 #include "graph.h"
 #include <fstream>
-#include "util.h"
+#include "algorithms.cpp"
+#include <filesystem>
 
 using std::ifstream;
 
@@ -86,14 +87,52 @@ int main() {
       }
   }
 
-  
-  
-  
+  /**
+   * collect user input to decied which dataset to use
+   */ 
+  string dataset_choice;
+  string airport_data;
+  string route_data;
+  bool dataset_end = false;
+  while (!dataset_end) {
+    std::cout << "Do you want to run algorithms on the OpenFlights dataset (OF) we used or dataset of your choice (Y)" << std::endl;
+    std::cin >> dataset_choice;
+    if (dataset_choice == "OF") {
+      // place holder
+      dataset_end = true;
+    } else if (dataset_choice == "Y") {
+      bool file_end = false;
+      bool another_choice = false;
+      while (!file_end) {
+        std::cout << "Please enter the filename of the airport data (also include folder name if in a different folder)" << std::endl;
+        std::cout << "Or enter B to choose a different dataset" << std::endl;
+        std::cin >> airport_data;
+        if (airport_data == "B") {
+          another_choice = true;
+        } else {
+          if (!std::__fs::filesystem::exists(airport_data)) {
+          std::cout << "invalid filename. Please try again" << std::endl;
+            continue;
+          }
+          std::cout << "Please enter the filename of the route data (also include folder name if in a different folder)" << std::endl;
+          std::cin >> route_data;
+          if (!std::__fs::filesystem::exists(route_data)) {
+            std::cout << "invalid filename. Please try again" << std::endl;
+            continue;
+          }
+          file_end = true;
+        }
+        if (another_choice) {
+          file_end = true;
+        } else {
+          dataset_end = true;
+        }
+      }
+    } else {
+      std::cout << "invalid choice, please try again" << std::endl;
+    }
     
-    
-  
-  g_.print();
-
+  }
 
   
   /**
