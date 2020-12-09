@@ -211,24 +211,186 @@ void visualization(Graph& g_) {
         float lat_p = (0-lat)*lat_degree + lat0;
         float lng_p = lng*lng_degree + lng0;
         // check point is in bound
-        if ((unsigned) lng_p < p.width() && (unsigned) lat_p < p.height()) {
+        
+        
+        if ((unsigned) lng_p  < p.width() && (unsigned) lat_p < p.height()) {
             cs225::HSLAPixel & pixel = p.getPixel((int) lng_p, (int) lat_p);
             pixel.h = 0;
             pixel.a = 1;
-            pixel.l = 1;
-            pixel.s = .5;   
+            pixel.l = .5;
+            pixel.s = .5;
         }
-    }
-    // latitude and longitude lines to help reading the visualization result
-    for (int x = -180; x < 180; x += 30) {
-        for (unsigned y = 0; y < p.height(); y++) {
-            float xi = x*lng_degree + lng0;
-            cs225::HSLAPixel & pixel = p.getPixel((int) xi, (int) y);
+        if ((unsigned) lng_p + 1  < p.width() && (unsigned) lat_p < p.height()) {
+            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + 1, (int) lat_p);
             pixel.h = 0;
             pixel.a = 1;
-            pixel.l = 1;
+            pixel.l = .5;
+            pixel.s = .5;
+        }
+        if ((unsigned) lng_p  < p.width() && (unsigned) lat_p - 1 < p.height()) {
+            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p, (int) lat_p - 1);
+            pixel.h = 0;
+            pixel.a = 1;
+            pixel.l = .5;
+            pixel.s = .5;
+        }
+        if ((unsigned) lng_p + 1  < p.width() && (unsigned) lat_p - 1 < p.height()) {
+            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + 1, (int) lat_p - 1);
+            pixel.h = 0;
+            pixel.a = 1;
+            pixel.l = .5;
+            pixel.s = .5;
+        }
+        if ((unsigned) lng_p + 2 < p.width() && (unsigned) lat_p < p.height()) {
+            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + 2, (int) lat_p);
+            pixel.h = 0;
+            pixel.a = 1;
+            pixel.l = .5;
+            pixel.s = .5;
+        }
+        if ((unsigned) lng_p + 2 < p.width() && (unsigned) lat_p - 1 < p.height()) {
+            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + 2, (int) lat_p - 1);
+            pixel.h = 0;
+            pixel.a = 1;
+            pixel.l = .5;
+            pixel.s = .5;
+        }
+        if ((unsigned) lng_p + 2  < p.width() && (unsigned) lat_p - 2 < p.height()) {
+            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + 2, (int) lat_p - 2);
+            pixel.h = 0;
+            pixel.a = 1;
+            pixel.l = .5;
+            pixel.s = .5;
+        }
+        if ((unsigned) lng_p + 1  < p.width() && (unsigned) lat_p - 2 < p.height()) {
+            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + 1, (int) lat_p - 2);
+            pixel.h = 0;
+            pixel.a = 1;
+            pixel.l = .5;
+            pixel.s = .5;
+        }
+        if ((unsigned) lng_p  < p.width() && (unsigned) lat_p - 2 < p.height()) {
+            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p, (int) lat_p - 2);
+            pixel.h = 0;
+            pixel.a = 1;
+            pixel.l = .5;
             pixel.s = .5;
         }
     }
+
+    for (auto& e : g_.getEdges()) {
+        // Edge e = g_.getEdge(Vertex("3484"), Vertex("3877"));
+        float source_lat = e.source.getLatitude();
+        float source_lng = e.source.getLongitude();
+
+        float source_lat_p = (0-source_lat)*lat_degree + lat0;
+        float source_lng_p = source_lng*lng_degree + lng0;
+
+        float dest_lat = e.dest.getLatitude();
+        float dest_lng = e.dest.getLongitude();
+
+        float dest_lat_p = (0-dest_lat)*lat_degree + lat0;
+        float dest_lng_p = dest_lng*lng_degree + lng0;
+
+        int lat_change = abs((int) dest_lat_p - (int) source_lat_p);
+        int lng_change = abs((int) dest_lng_p - (int) source_lng_p);
+
+        if (lng_change <= lat_change) {
+
+            int start_lat = source_lat_p;
+            int start_lng = source_lng_p;
+            int end_lat = dest_lat_p;
+            int end_lng = dest_lng_p;
+
+            if (source_lng_p > dest_lng_p) {
+                start_lat = dest_lat_p;
+                start_lng = dest_lng_p;
+                end_lng = source_lng_p;
+                end_lat = source_lat_p;
+            }
+            lng_change = end_lng - start_lng;
+
+            int A = 2*lat_change;
+            int B = A - 2*lng_change;
+            int P = A - lng_change;
+
+            
+
+            int j = start_lat;
+            
+            for (int i = start_lng+1; i <= end_lng; i++) {
+                if (P < 0) {
+                    cs225::HSLAPixel & pixel = p.getPixel(i, j);
+                    pixel.h = 0;
+                    pixel.a = 1;
+                    pixel.l = 1;
+                    pixel.s = .5;
+                    P+=A;
+                } else {
+                    if (end_lat < start_lat) {
+                        j--;
+                    } else {
+                        j++;
+                    }
+                    cs225::HSLAPixel & pixel = p.getPixel(i, j);
+                    pixel.h = 0;
+                    pixel.a = 1;
+                    pixel.l = 1;
+                    pixel.s = .5;
+                    P+=B;
+                    
+                }
+            }
+        } else {
+
+            int start_lat = source_lat_p;
+            int start_lng = source_lng_p;
+            int end_lat = dest_lat_p;
+            int end_lng = dest_lng_p;
+
+            if (source_lat_p > dest_lat_p) {
+                start_lat = dest_lat_p;
+                start_lng = dest_lng_p;
+                end_lng = source_lng_p;
+                end_lat = source_lat_p;
+            }
+            lng_change = end_lng - start_lng;
+
+            int A = 2 * lng_change;
+            int B = A - 2 * lat_change;
+            int P = A - lat_change;
+
+            int j = start_lng;
+
+            for (int i = start_lat + 1; i <= end_lat; i++) {
+                if (P < 0) {
+                    cs225::HSLAPixel & pixel = p.getPixel(j, i);
+                    pixel.h = 0;
+                    pixel.a = 1;
+                    pixel.l = 1;
+                    pixel.s = .5;
+                    P+=A;
+                } else {
+                    if (end_lng < start_lng) {
+                        j--;
+                    } else {
+                        j++;
+                    }
+                    cs225::HSLAPixel & pixel = p.getPixel(j, i);
+                    pixel.h = 0;
+                    pixel.a = 1;
+                    pixel.l = 1;
+                    pixel.s = .5;
+                    P+=B;
+                    
+                }
+            }
+        }
+    }
+        
+            
+        
+    
+
     p.writeToFile("world_map_with_airports.png");
 }
