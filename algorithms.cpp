@@ -10,7 +10,7 @@ using std::ifstream;
  * @param route_data: filename of route data
  * @param g: empty graph to built on
  */
-void build_graph(string airport_data, string route_data, Graph& g) {
+void Algorithms::build_graph(string airport_data, string route_data, Graph& g) {
    /**
    * load airport data. use counter to keep track of different part of 
    * airport information.
@@ -98,7 +98,7 @@ void build_graph(string airport_data, string route_data, Graph& g) {
  * @param toReturn: vector that represents orders of nodes visited
  * @param visited_: a map that keeps track of whether a node is visited
  */
-void BFS_Traversal(Graph& g_, Vertex start_vertex, vector<Vertex>& toReturn, 
+void Algorithms::BFS_Traversal(Graph& g_, Vertex start_vertex, vector<Vertex>& toReturn, 
                     std::map<string, bool>& visited_) {
     std::queue<Vertex> queue_;
     queue_.push(start_vertex);
@@ -122,7 +122,7 @@ void BFS_Traversal(Graph& g_, Vertex start_vertex, vector<Vertex>& toReturn,
  * @param g_: graph to traverse
  * @return vector that represents orders of nodes visited
  */
-vector<Vertex> BFS(Graph& g_) {
+vector<Vertex> Algorithms::BFS(Graph& g_) {
     vector<Vertex> toReturn;
     // map that maps id of Vertex to whether it is visited
     // initial value for all Vertexs are false
@@ -145,7 +145,7 @@ vector<Vertex> BFS(Graph& g_) {
  * @param toReturn: vector that represents orders of nodes visited
  * @param visited_: a map that keeps track of whether a node is visited
  */
-void DFS_Traversal(Graph& g_, Vertex start_vertex, vector<Vertex>& toReturn, 
+void Algorithms::DFS_Traversal(Graph& g_, Vertex start_vertex, vector<Vertex>& toReturn, 
                     std::map<string, bool>& visited_) {
     std::stack<Vertex> stack_;
     stack_.push(start_vertex);
@@ -169,7 +169,7 @@ void DFS_Traversal(Graph& g_, Vertex start_vertex, vector<Vertex>& toReturn,
  * @param g_: graph to traverse
  * @return vector that represents orders of nodes visited
  */
-vector<Vertex> DFS(Graph& g_) {
+vector<Vertex> Algorithms::DFS(Graph& g_) {
     vector<Vertex> toReturn;
     // map that maps id of Vertex to whether it is visited
     // initial value for all Vertices are false
@@ -192,7 +192,7 @@ vector<Vertex> DFS(Graph& g_) {
  * result is saved as a PNG named "world_map_with_airports.png"
  * @param g_ : graph to visualize
  */
-void visualization(Graph& g_) {
+void Algorithms::visualization(Graph& g_) {
     PNG p;
     // use world-map.png as background
     p.readFromFile("world-map.png");

@@ -8,6 +8,7 @@ int main() {
   std::cout << "test main file" << std::endl;
   // initialize an empty graph
   Graph g_ = Graph(true, true);
+  Algorithms a_;
 
   /**
    * collect user input to decied which dataset to use
@@ -21,7 +22,7 @@ int main() {
     std::cin >> dataset_choice;
     if (dataset_choice == "OF") {
       // use openflight dataset to build the graph
-      build_graph("data/airports.dat", "data/routes.dat", g_);
+      a_.build_graph("data/airports.dat", "data/routes.dat", g_);
       // finish choosing dataset
       dataset_end = true;
     } else if (dataset_choice == "Y") {
@@ -49,7 +50,7 @@ int main() {
           }
           // both file exists, build graph and finish reading filename
           file_end = true;
-          build_graph(airport_data, route_data, g_);
+          a_.build_graph(airport_data, route_data, g_);
         }
         if (another_choice) {
           file_end = true;
@@ -72,8 +73,8 @@ int main() {
     std::cout << "Please choose the algorithm you want to run" << std::endl;
     std::cout << "The available algorithms are: " << std::endl;
     std::cout << "DFS/BFS traversal (enter DFS for DFS and BFS for BFS)" << std::endl;
-    std::cout << "Shortest path between two points (enter shortest_path)" << std::endl;
-    std::cout << "Project onto map based on Openflight dataset (enter visualization)" << std::endl;
+    std::cout << "Shortest path between two points using distance as weight (enter SP)" << std::endl;
+    std::cout << "Project onto map based on Openflight dataset (enter V)" << std::endl;
     std::cin >> choice;
     if (choice == "DFS") {
       // will be replaced later, place holder for now
@@ -83,13 +84,13 @@ int main() {
       // will be replaced later, place holder for now
       std::cout << "running BFS" << std::endl;
       end = true;
-    } else if (choice == "shortest_path") {
+    } else if (choice == "SP") {
       // will be replaced later, place holder for now
       std::cout << "running shortest path" << std::endl;
       end = true;
-    } else if (choice == "visualization") {
+    } else if (choice == "V") {
       // will be replaced later, place holder for now
-      visualization(g_);
+      a_.visualization(g_);
       std::cout << "output projection onto world map based on data to \"world_map_with_airports.png\"." << std::endl;
       end = true;
     } else {

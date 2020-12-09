@@ -161,7 +161,8 @@ void clear(vector<Graph*> g) {
 
 TEST_CASE("BFS: simple graph with 3 nodes, expected 0 1 2") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = BFS(*g[0]);
+    Algorithms a;
+    vector<Vertex> v1 = a.BFS(*g[0]);
     REQUIRE ( v1.size() == 3 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "1" );
@@ -171,7 +172,8 @@ TEST_CASE("BFS: simple graph with 3 nodes, expected 0 1 2") {
 
 TEST_CASE("BFS: graph with 6 nodes, expected 0 1 5 4 2 3") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = BFS(*g[1]);
+    Algorithms a;
+    vector<Vertex> v1 = a.BFS(*g[1]);
     REQUIRE ( v1.size() == 6 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "1" );
@@ -184,7 +186,8 @@ TEST_CASE("BFS: graph with 6 nodes, expected 0 1 5 4 2 3") {
 
 TEST_CASE("BFS: graph with 8 nodes, expected 0 3 2 6 4 1 7 5") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = BFS(*g[2]);
+    Algorithms a;
+    vector<Vertex> v1 = a.BFS(*g[2]);
     REQUIRE ( v1.size() == 8 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "3" );
@@ -199,7 +202,8 @@ TEST_CASE("BFS: graph with 8 nodes, expected 0 3 2 6 4 1 7 5") {
 
 TEST_CASE("BFS: graph with 3 disconnected nodes, expected 0 1 2") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = BFS(*g[3]);
+    Algorithms a;
+    vector<Vertex> v1 = a.BFS(*g[3]);
     REQUIRE ( v1.size() == 3 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "1" );
@@ -209,7 +213,8 @@ TEST_CASE("BFS: graph with 3 disconnected nodes, expected 0 1 2") {
 
 TEST_CASE("BFS: graph with 6 nodes and 2 connected components, expected 0 3 1 2 5 4") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = BFS(*g[4]);
+    Algorithms a;
+    vector<Vertex> v1 = a.BFS(*g[4]);
     REQUIRE ( v1.size() == 6 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "3" );
@@ -222,7 +227,8 @@ TEST_CASE("BFS: graph with 6 nodes and 2 connected components, expected 0 3 1 2 
 
 TEST_CASE("BFS: graph with 8 nodes and 4 connected components,  expected 0 1 5 4 2 6 7 3") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = BFS(*g[5]);
+    Algorithms a;
+    vector<Vertex> v1 = a.BFS(*g[5]);
     REQUIRE ( v1.size() == 8 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "1" );
@@ -239,7 +245,8 @@ TEST_CASE("BFS: graph with 8 nodes and 4 connected components,  expected 0 1 5 4
 //////////////////////DFS test cases////////////////////
 TEST_CASE("DFS:simple graph with three nodes, expected 0 1 2") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = DFS(*g[0]);
+    Algorithms a;
+    vector<Vertex> v1 = a.DFS(*g[0]);
     REQUIRE ( v1.size() == 3 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "1" );
@@ -249,7 +256,8 @@ TEST_CASE("DFS:simple graph with three nodes, expected 0 1 2") {
 
 TEST_CASE("DFS:graph with six nodes, expected 0 1 2 4 3 5") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = DFS(*g[1]);
+    Algorithms a;
+    vector<Vertex> v1 = a.DFS(*g[1]);
     REQUIRE ( v1.size() == 6 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "1" );
@@ -262,7 +270,8 @@ TEST_CASE("DFS:graph with six nodes, expected 0 1 2 4 3 5") {
 
 TEST_CASE("DFS:graph with 8 nodes, expected 0 2 1 3 4 5 6 7") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = DFS(*g[2]);
+    Algorithms a;
+    vector<Vertex> v1 = a.DFS(*g[2]);
     REQUIRE ( v1.size() == 8 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "2" );
@@ -277,7 +286,8 @@ TEST_CASE("DFS:graph with 8 nodes, expected 0 2 1 3 4 5 6 7") {
 
 TEST_CASE("DFS: graph with 3 disconnected nodes, expected 0 1 2") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = DFS(*g[3]);
+    Algorithms a;
+    vector<Vertex> v1 = a.DFS(*g[3]);
     REQUIRE ( v1.size() == 3 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "1" );
@@ -287,7 +297,8 @@ TEST_CASE("DFS: graph with 3 disconnected nodes, expected 0 1 2") {
 
 TEST_CASE("DFS: graph with 6 nodes and 2 connected components, expected 0 3 1 2 4 5") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = DFS(*g[4]);
+    Algorithms a;
+    vector<Vertex> v1 = a.DFS(*g[4]);
     REQUIRE ( v1.size() == 6 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "3" );
@@ -300,7 +311,8 @@ TEST_CASE("DFS: graph with 6 nodes and 2 connected components, expected 0 3 1 2 
 
 TEST_CASE("DFS: graph with 8 nodes and 4 connected components,  expected 0 1 5 4 2 7 6 3") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = DFS(*g[5]);
+    Algorithms a;
+    vector<Vertex> v1 = a.DFS(*g[5]);
     REQUIRE ( v1.size() == 8 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "1" );
@@ -316,7 +328,8 @@ TEST_CASE("DFS: graph with 8 nodes and 4 connected components,  expected 0 1 5 4
 //////////weighted graph test cases////////////
 TEST_CASE("weighted BFS: graph with 3 nodes and two weighted edges, expected 0, 1, 2") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = BFS(*g[6]);
+    Algorithms a;
+    vector<Vertex> v1 = a.BFS(*g[6]);
     REQUIRE ( v1.size() == 3 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "1" );
@@ -326,7 +339,8 @@ TEST_CASE("weighted BFS: graph with 3 nodes and two weighted edges, expected 0, 
 
 TEST_CASE("weighted DFS: graph with 8 nodes and 4 connected components") {
     vector<Graph*> g = getTestGraph();
-    vector<Vertex> v1 = DFS(*g[7]);
+    Algorithms a;
+    vector<Vertex> v1 = a.DFS(*g[7]);
     REQUIRE ( v1.size() == 8 ) ;
     REQUIRE ( v1[0].getId() == "0" );
     REQUIRE ( v1[1].getId() == "1" );
