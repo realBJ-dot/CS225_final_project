@@ -102,7 +102,7 @@ output_msg: ; $(CLANG_VERSION_MSG)
 
 # Standard C++ Makefile rules:
 clean:
-	rm -rf $(EXE) $(TEST) $(OBJS_DIR) $(CLEAN_RM) *.o *.d
+	rm -rf $(EXE) $(TEST) $(OBJS_DIR) $(CLEAN_RM) *.o *.d *.txt world_map_with*.png
 
 tidy: clean
 	rm -rf doc

@@ -77,12 +77,32 @@ int main() {
     std::cout << "Project onto map based on Openflight dataset (enter V)" << std::endl;
     std::cin >> choice;
     if (choice == "DFS") {
-      // will be replaced later, place holder for now
+      // output order of node visited during DFS to "DFS.txt"
       std::cout << "running DFS" << std::endl;
+      vector<Vertex> dfs_result = a_.DFS(g_);
+      std::ofstream fs0("DFS.txt"); 
+      if(fs0) {
+        for (auto& v : dfs_result) {
+          // write id of the node followed by a new line character to the txt file 
+          fs0 << v.getId() << std::endl;
+        }
+      }
+      fs0.close();
+      std::cout << "output order of node visited during DFS to \"DFS.txt\"" << std::endl;
       end = true;
     } else if (choice == "BFS") {
-      // will be replaced later, place holder for now
+      // output order of node visited during BFS to "BFS.txt"
       std::cout << "running BFS" << std::endl;
+      vector<Vertex> bfs_result = a_.BFS(g_);
+      std::ofstream fs1("BFS.txt"); 
+      if(fs1) {
+        for (auto& v : bfs_result) {
+          // write id of the node followed by a new line character to the txt file 
+          fs1 << v.getId() << std::endl;
+        }
+      }
+      fs1.close();
+      std::cout << "output order of node visited during BFS to \"BFS.txt\"" << std::endl;
       end = true;
     } else if (choice == "SP") {
       // will be replaced later, place holder for now
