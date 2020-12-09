@@ -1,6 +1,6 @@
 #include "edge.h"
 #include "graph.h"
-#include "algorithms.cpp"
+#include "algorithms.h"
 #include <filesystem>
 
 
@@ -90,7 +90,7 @@ int main() {
     } else if (choice == "visualization") {
       // will be replaced later, place holder for now
       visualization(g_);
-      std::cout << "output projection onto world map based on data to \" world_map_with_airports.png \"." << std::endl;
+      std::cout << "output projection onto world map based on data to \"world_map_with_airports.png\"." << std::endl;
       end = true;
     } else {
       std::cout << "invalid choice, please try again" << std::endl;
