@@ -8,11 +8,100 @@
 #include <map>
 #include <stack>
 #include <utility>
+#include <fstream>
 
 #include "cs225/PNG.h"
 
 using std::vector;
 using cs225::PNG;
+using std::ifstream;
+
+/**
+ * function that build graph based on airport data and route data
+ * @param airport_data: filename of airport data
+ * @param route_data: filename of route data
+ * @param g: empty graph to built on
+ */
+void build_graph(string airport_data, string route_data, Graph& g) {
+   /**
+   * load airport data. use counter to keep track of different part of 
+   * airport information.
+   * airports are used as vertices of the graph
+   */
+  ifstream wordsFile(airport_data);
+  string word;
+  if (wordsFile.is_open()) {
+      /* Reads a line from `wordsFile` into `word` until the file ends. */
+      while (getline(wordsFile, word)) {
+          std::string part;
+          std::istringstream ss(word);
+          int counter = 0;
+          string id;
+          float latitude;
+          float longitude;
+          /** split single line on ','.
+           * process information of a single airport 
+           */
+          while(std::getline(ss, part, ',')) {
+            if (counter == 0) {
+                id = part;
+            } else if (counter == 6) {
+                latitude = atof(part.c_str());
+            } else if (counter == 7) {
+                longitude = atof(part.c_str());
+            }
+            counter++;
+          }
+          Vertex v_ = Vertex(id, latitude, longitude);
+          g.insertVertex(v_);
+      }
+      
+  }
+  /**
+   * load route data. use counter to keep track of different part of 
+   * routes information
+   * routes are used as edge of the graph. distance between source and destination
+   * airport is used as weight of the edges
+   */
+  ifstream wordsFile_(route_data);
+  string word_;
+  if (wordsFile_.is_open()) {
+      /* Reads a line from `wordsFile` into `word` until the file ends. */
+      while (getline(wordsFile_, word_)) {
+          std::string part_;
+          std::istringstream ss_(word_);
+          int counter_ = 0;
+          string source;
+          string destination;
+          /** split single line on ','.
+          * process information of a single route 
+           */
+          while(std::getline(ss_, part_, ',')) {
+            if (counter_ == 3) {
+              source = part_;
+            } else if (counter_ == 5) {
+              destination = part_;
+            }
+            counter_++;  
+          }
+          Vertex s = Vertex(source);
+          Vertex d = Vertex(destination);
+          bool insert = g.insertEdge(s, d);
+          if (insert) {
+            /*set weight of edges as of distance*/
+            Edge e = g.getEdge(s, d);
+            float lat1 = e.source.getLatitude();
+      
+            float lng1 = e.source.getLongitude();
+            float lat2 = e.dest.getLatitude();
+            float lng2 = e.dest.getLongitude();
+            float weight = distance_helper(lat1, lng1, lat2, lng2);
+      
+            g.setEdgeWeight(e.source, e.dest, weight);
+          }
+      }
+  }
+}
 
 /**
  * helper function for BFS traversal
@@ -155,14 +244,5 @@ void visualization(Graph& g_) {
         pixel.s = .5;
     }
     }
-    /*for (int i = 0; i < 100; i++) {
-    cs225::HSLAPixel & pixel = p.getPixel((int) (-118.40799 * lng_degree + lng0 + i), (int) (-33.9425 * lat_degree + lat0));
-
-    pixel.h = 0;
-    pixel.a = 1;
-    pixel.l = 1;
-    pixel.s = .5;
-    }*/
-    
     p.writeToFile("world_map_with_airports.png");
 }

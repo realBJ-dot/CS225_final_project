@@ -1,91 +1,13 @@
 #include "edge.h"
 #include "graph.h"
-#include <fstream>
 #include "algorithms.cpp"
 #include <filesystem>
 
-using std::ifstream;
 
 int main() {
   std::cout << "test main file" << std::endl;
-  // process the dataset to graph
+  // initialize an empty graph
   Graph g_ = Graph(true, true);
-  /**
-   * load airport data. use i as a counter to keep track of different part of 
-   * airport information
-   */
-  ifstream wordsFile("data/airports.dat");
-  string word;
-  if (wordsFile.is_open()) {
-      /* Reads a line from `wordsFile` into `word` until the file ends. */
-      while (getline(wordsFile, word)) {
-          std::string part;
-          std::istringstream ss(word);
-          int counter = 0;
-          string id;
-          float latitude;
-          float longitude;
-          /** split single line on ','.
-           * process information of a single airport 
-           */
-          while(std::getline(ss, part, ',')) {
-             if (counter == 0) {
-               id = part;
-             } else if (counter == 6) {
-               latitude = atof(part.c_str());
-             } else if (counter == 7) {
-               longitude = atof(part.c_str());
-             }
-             counter++;
-          }
-          Vertex v_ = Vertex(id, latitude, longitude);
-          g_.insertVertex(v_);
-      }
-      
-  }
-  /**
-   * load route data. use i as a counter to keep track of different part of 
-   * routes information
-   */
-  ifstream wordsFile_("data/routes.dat");
-  string word_;
-  if (wordsFile_.is_open()) {
-      /* Reads a line from `wordsFile` into `word` until the file ends. */
-      while (getline(wordsFile_, word_)) {
-          std::string part_;
-          std::istringstream ss_(word_);
-          int counter_ = 0;
-          string source;
-          string destination;
-          /** split single line on ','.
-          * process information of a single route 
-           */
-          while(std::getline(ss_, part_, ',')) {
-            if (counter_ == 3) {
-              source = part_;
-            } else if (counter_ == 5) {
-              destination = part_;
-            }
-            counter_++;  
-          }
-          Vertex s = Vertex(source);
-          Vertex d = Vertex(destination);
-          bool insert = g_.insertEdge(s, d);
-          if (insert) {
-            /*set weight of edges as of distance*/
-            auto e = g_.getEdge(s, d);
-            float lat1 = e.source.getLatitude();
-      
-            float lng1 = e.source.getLongitude();
-            float lat2 = e.dest.getLatitude();
-            float lng2 = e.dest.getLongitude();
-            float weight = distance_helper(lat1, lng1, lat2, lng2);
-      
-            g_.setEdgeWeight(e.source, e.dest, weight);
-          }
-
-      }
-  }
 
   /**
    * collect user input to decied which dataset to use
@@ -98,7 +20,9 @@ int main() {
     std::cout << "Do you want to run algorithms on the OpenFlights dataset (OF) we used or dataset of your choice (Y)" << std::endl;
     std::cin >> dataset_choice;
     if (dataset_choice == "OF") {
-      // place holder
+      // use openflight dataset to build the graph
+      build_graph("data/airports.dat", "data/routes.dat", g_);
+      // finish choosing dataset
       dataset_end = true;
     } else if (dataset_choice == "Y") {
       bool file_end = false;
@@ -108,19 +32,24 @@ int main() {
         std::cout << "Or enter B to choose a different dataset" << std::endl;
         std::cin >> airport_data;
         if (airport_data == "B") {
+          // if choice is B, go back to choose dataset
           another_choice = true;
         } else {
+          // read filename of airport data and check if file exists
           if (!std::__fs::filesystem::exists(airport_data)) {
-          std::cout << "invalid filename. Please try again" << std::endl;
+            std::cout << "file does not exist. Please try again" << std::endl;
             continue;
           }
+          // read file name of route data and check if file exists
           std::cout << "Please enter the filename of the route data (also include folder name if in a different folder)" << std::endl;
           std::cin >> route_data;
           if (!std::__fs::filesystem::exists(route_data)) {
-            std::cout << "invalid filename. Please try again" << std::endl;
+            std::cout << "file does not exist. Please try again" << std::endl;
             continue;
           }
+          // both file exists, build graph and finish reading filename
           file_end = true;
+          build_graph(airport_data, route_data, g_);
         }
         if (another_choice) {
           file_end = true;
@@ -133,7 +62,6 @@ int main() {
     }
     
   }
-
   
   /**
    * collect user input to decided which algorithm to run
@@ -161,7 +89,8 @@ int main() {
       end = true;
     } else if (choice == "visualization") {
       // will be replaced later, place holder for now
-      std::cout << "running visualization" << std::endl;
+      visualization(g_);
+      std::cout << "output projection onto world map based on data to \" world_map_with_airports.png \"." << std::endl;
       end = true;
     } else {
       std::cout << "invalid choice, please try again" << std::endl;
