@@ -295,7 +295,7 @@ void visualization(Graph& g_) {
         int lat_change = abs((int) dest_lat_p - (int) source_lat_p);
         int lng_change = abs((int) dest_lng_p - (int) source_lng_p);
 
-        if (lng_change <= lat_change) {
+        if (lng_change > lat_change) {
 
             int start_lat = source_lat_p;
             int start_lng = source_lng_p;
@@ -308,7 +308,6 @@ void visualization(Graph& g_) {
                 end_lng = source_lng_p;
                 end_lat = source_lat_p;
             }
-            lng_change = end_lng - start_lng;
 
             int A = 2*lat_change;
             int B = A - 2*lng_change;
@@ -354,7 +353,6 @@ void visualization(Graph& g_) {
                 end_lng = source_lng_p;
                 end_lat = source_lat_p;
             }
-            lng_change = end_lng - start_lng;
 
             int A = 2 * lng_change;
             int B = A - 2 * lat_change;
