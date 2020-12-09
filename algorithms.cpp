@@ -1,16 +1,4 @@
-#include "cmath"
-#include <iostream>
-#include "graph.h"
-#include "util.h"
-#include "edge.h"
-#include <vector>
-#include <queue>
-#include <map>
-#include <stack>
-#include <utility>
-#include <fstream>
-
-#include "cs225/PNG.h"
+#include "algorithms.h"
 
 using std::vector;
 using cs225::PNG;
@@ -151,7 +139,7 @@ vector<Vertex> BFS(Graph& g_) {
 }
 
 /**
- * helper function for BFS traversal
+ * helper function for DFS traversal
  * @param g_: graph to traverse
  * @param start_vertex: starting vertex of traversal
  * @param toReturn: vector that represents orders of nodes visited
@@ -197,52 +185,50 @@ vector<Vertex> DFS(Graph& g_) {
     return toReturn;
 }
 
-
+/**
+ * graphic output of graph
+ * function that project graph on to world map 
+ * vertices of graph are airports and edges are routes
+ * result is saved as a PNG named "world_map_with_airports.png"
+ * @param g_ : graph to visualize
+ */
 void visualization(Graph& g_) {
     PNG p;
+    // use world-map.png as background
     p.readFromFile("world-map.png");
-    /*
-    for (unsigned x = 0; x < p.width(); x++) {
-    for (unsigned y = 0; y < p.height(); y++) {
-        cs225::HSLAPixel & pixel_in = p.getPixel(x, y);
-        pixel_in.a = 1;
-        pixel_in.h = 0;
-        pixel_in.l = 0.5;
-        pixel_in.s = .5;
-    }
-    }
-    */
+    // calculate position of 0 degree latitude and longitude
     float lat0 = p.height() / 2;
     float lng0 = p.width() / 2;
+    // calculate num of pixels for one degree
     float lat_degree = p.height()/180;
     float lng_degree = p.width()/360;
     
-    vector<Vertex> v = g_.getVertices();
-    //vector<std::pair<float, float>> latlng;
-    for (auto e : v) {
-        //latlng.push_back(pair<float, float>(e.getLatitude(), e.getLongitude()));
-        float lat = e.getLatitude();
-        float lng = e.getLongitude();
+    // get all the vertices of the graph. i.e. all the airports
+    vector<Vertex> vertices = g_.getVertices();
+    for (auto& v : vertices) {
+        float lat = v.getLatitude();
+        float lng = v.getLongitude();
         float lat_p = (0-lat)*lat_degree + lat0;
         float lng_p = lng*lng_degree + lng0;
-        if (lng_p == 2700 && lat_p == 2700) {
-            continue;
+        // check point is in bound
+        if ((unsigned) lng_p < p.width() && (unsigned) lat_p < p.height()) {
+            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p, (int) lat_p);
+            pixel.h = 0;
+            pixel.a = 1;
+            pixel.l = 1;
+            pixel.s = .5;   
         }
-        cs225::HSLAPixel & pixel = p.getPixel((int) lng_p, (int) lat_p);
-        pixel.h = 0;
-        pixel.a = 1;
-        pixel.l = 1;
-        pixel.s = .5;
     }
+    // latitude and longitude lines to help reading the visualization result
     for (int x = -180; x < 180; x += 30) {
         for (unsigned y = 0; y < p.height(); y++) {
             float xi = x*lng_degree + lng0;
             cs225::HSLAPixel & pixel = p.getPixel((int) xi, (int) y);
-        pixel.h = 0;
-        pixel.a = 1;
-        pixel.l = 1;
-        pixel.s = .5;
-    }
+            pixel.h = 0;
+            pixel.a = 1;
+            pixel.l = 1;
+            pixel.s = .5;
+        }
     }
     p.writeToFile("world_map_with_airports.png");
 }
