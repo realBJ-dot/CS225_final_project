@@ -443,5 +443,6 @@ vector<string> Algorithms::construct_path(string source, string dest) {
         shortest.push_back(curr);
         curr = P[M[curr]][M[dest]];
     }
+    shortest.push_back(dest);
     return shortest;
 }
