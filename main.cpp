@@ -107,6 +107,8 @@ int main() {
     } else if (choice == "SP") {
       // will be replaced later, place holder for now
       std::cout << "running shortest path" << std::endl;
+      a_.FloydWarshall(g_);
+      std::cout << "finish" << std::endl;
       end = true;
     } else if (choice == "V") {
       // will be replaced later, place holder for now
