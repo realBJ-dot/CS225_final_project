@@ -24,6 +24,7 @@ vector<Graph*> getTestGraph() {
     Graph* g7 = new Graph(true, true);
     Graph* g8 = new Graph(true, true);
     Graph* g9 = new Graph(true, true);
+    Graph* g10 = new Graph(true, true);
     //vertices
     Vertex v0 = Vertex("0");
     Vertex v1 = Vertex("1");
@@ -169,6 +170,22 @@ vector<Graph*> getTestGraph() {
     g9 -> setEdgeWeight(v0, v3, 7);
     g9 -> insertEdge(v3, v0);
     g9 -> setEdgeWeight(v3, v0, 2);
+    g.push_back(g9);
+
+    //g10 is weighted graph with 4 nodes and disconnected components to test Floyrd_Warshall algorithm.
+    g10 -> insertVertex(v3);
+    g10 -> insertVertex(v2);
+    g10 -> insertVertex(v1);
+    g10 -> insertVertex(v0);
+    g10 -> insertEdge(v0, v1);
+    g10 -> setEdgeWeight(v0, v1, 3);
+    g10 -> insertEdge(v1, v0);
+    g10 -> setEdgeWeight(v1, v0, 8);
+    g10 -> insertEdge(v0, v3);
+    g10 -> setEdgeWeight(v0, v3, 7);
+    g10 -> insertEdge(v3, v0);
+    g10 -> setEdgeWeight(v3, v0, 2);
+    g.push_back(g10);
     return g;
 }
 
@@ -374,6 +391,9 @@ TEST_CASE("weighted DFS: g8, graph with 8 nodes and 4 connected components") {
     clear(g);
 }
 
+
+////// shorted path test /////
+//simple shorted path test
 TEST_CASE("weighted shorted path: g9, graph with 4 nodes and 7 weighted nodes") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
@@ -384,6 +404,41 @@ TEST_CASE("weighted shorted path: g9, graph with 4 nodes and 7 weighted nodes") 
     REQUIRE (v1[1] == "1");
     REQUIRE (v1[2] == "2");
     REQUIRE (v1[3] == "3");
+    clear(g);
+}
+
+TEST_CASE("weighted shorted path 2: g9, graph with 4 nodes and 7 weighted nodes") {
+    vector<Graph*> g = getTestGraph();
+    Algorithms a;
+    a.FloydWarshall(*g[8]);
+    vector<std::string> v1 = a.construct_path("1", "3");
+    REQUIRE (v1.size() == 3);
+    REQUIRE (v1[0] == "1");
+    REQUIRE (v1[1] == "2");
+    REQUIRE (v1[2] == "3");
+    clear(g);
+}
+
+TEST_CASE("weighted shorted path 3: g9, graph with 4 nodes and 7 weighted nodes") {
+    vector<Graph*> g = getTestGraph();
+    Algorithms a;
+    a.FloydWarshall(*g[8]);
+    vector<std::string> v1 = a.construct_path("2", "0");
+    REQUIRE (v1.size() == 3);
+    REQUIRE (v1[0] == "2");
+    REQUIRE (v1[1] == "3");
+    REQUIRE (v1[2] == "0");
+    clear(g);
+}
+
+//test disconnetec components
+TEST_CASE("weighted shorted path: g10, graph with 4 nodes and disconnected components") {
+    vector<Graph*> g = getTestGraph();
+    Algorithms a;
+    a.FloydWarshall(*g[9]);
+    vector<std::string> v1 = a.construct_path("0", "2");
+    REQUIRE (v1.size() == 1);
+    REQUIRE (v1[0] == "no path");
     clear(g);
 }
 

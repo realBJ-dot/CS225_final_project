@@ -403,7 +403,6 @@ void Algorithms::FloydWarshall(Graph& g_) {
     size_t vertices_size = g_.getVertices().size();
     D = vector<vector<float>>(vertices_size, vector<float>(vertices_size, inf));
     P = vector<vector<string>>(vertices_size, vector<string>(vertices_size, "-1"));
-    
     for (size_t i = 0; i < vertices_size; i++) {
         D[i][i] = 0;
         P[i][i] = g_.getVertices()[i].getId();
@@ -438,11 +437,15 @@ void Algorithms::FloydWarshall(Graph& g_) {
 vector<string> Algorithms::construct_path(string source, string dest) {
     vector<string> shortest;
     string curr = source;
-    
+    if (P[M[curr]][M[dest]] == "-1") {
+        shortest.push_back("no path");
+        return shortest;
+    }
     while (curr != dest) {
         shortest.push_back(curr);
         curr = P[M[curr]][M[dest]];
     }
     shortest.push_back(dest);
+
     return shortest;
 }
