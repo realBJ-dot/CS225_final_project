@@ -13,6 +13,7 @@
 #include "cs225/PNG.h"
 
 class Algorithms {
+
     public:
         /**
          * function that build graph based on airport data and route data
@@ -47,7 +48,17 @@ class Algorithms {
          */
         void visualization(Graph& g_);
 
+        /**
+         *Floyd_Warshall algorithm.
+        */
+        void FloydWarshall(Graph& g_);
+
+        /**
+         * to result a list of vertices of the shortest path.
+         */
+        vector<string> construct_path(Vertex source, Vertex dest);
     private:
+    
         /**
          * private helper function for BFS
          */
@@ -57,7 +68,12 @@ class Algorithms {
          * private helper function for DFS
          */
         void DFS_Traversal(Graph& g_, Vertex start_vertex, vector<Vertex>& toReturn, 
-                    std::map<string, bool>& visited_);            
+                    std::map<string, bool>& visited_);   
+        
+
+        vector<vector<float>> D; 
+        vector<vector<string>> P; 
+        std::map<string, int> M;
 };
 
 #include "algorithms.cpp"

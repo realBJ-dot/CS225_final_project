@@ -392,3 +392,56 @@ void Algorithms::visualization(Graph& g_) {
 
     p.writeToFile("world_map_with_airports.png");
 }
+
+
+ /**
+ *Floyd_Warshall algorithm.
+*/
+
+void Algorithms::FloydWarshall(Graph& g_) {
+    float inf = 99999999;
+    size_t vertices_size = g_.getVertices().size();
+    D = vector<vector<float>>(vertices_size, vector<float>(vertices_size, inf));
+    P = vector<vector<string>>(vertices_size, vector<string>(vertices_size, "-1"));
+    
+    for (size_t i = 0; i < vertices_size; i++) {
+        D[i][i] = 0;
+        P[i][i] = g_.getVertices()[i].getId();
+    }
+    for (size_t i = 0; i < vertices_size; i++) {
+        M[g_.getVertices()[i].getId()] = i;
+        for (size_t j = 0; j < vertices_size; j++) {
+            if (g_.edgeExists(g_.getVertices()[i], g_.getVertices()[j])) {
+                D[i][j] = g_.getEdgeWeight(g_.getVertices()[i], g_.getVertices()[j]);
+                P[i][j] = g_.getVertices()[j].getId();
+            } else {
+                continue;
+            }
+        }
+    }
+   
+    for (size_t w = 0; w < vertices_size; w++) {
+        for (size_t u = 0; u < vertices_size; u++) {
+            for (size_t v = 0; v < vertices_size; v++) {
+                if (D[u][v] > D[u][w] + D[w][v]) {
+                    D[u][v] = D[u][w] + D[w][v];
+                    P[u][v] = P[u][w];
+                }
+            }
+        }
+    }
+}
+
+/**
+ * to result a list of vertices of the shortest path.
+ */
+vector<string> Algorithms::construct_path(Vertex source, Vertex dest) {
+    vector<string> shortest;
+    string curr = source.getId();
+    
+    while (curr != dest.getId()) {
+        shortest.push_back(curr);
+        curr = P[M[curr]][M[dest.getId()]];
+    }
+    return shortest;
+}
