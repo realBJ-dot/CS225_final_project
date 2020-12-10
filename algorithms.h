@@ -65,6 +65,7 @@ class Algorithms {
          * to get the distance between two points
          */
         float shortest_distance(string source, string dest);
+   
     private:
     
         /**

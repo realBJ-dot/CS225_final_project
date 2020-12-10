@@ -406,10 +406,13 @@ void Algorithms::visualization(Graph& g_) {
 }
 
 
- /**
- *Floyd_Warshall algorithm.
+/**
+ * Floyd Warshall's algorithm
+ * Constructs a distance matrix D that demonstrate the shortest distance
+ * between every pair of vertices
+ * and a path matrix P that helps reconstructs the shortest path
+ * @param g_: graph to run Floyd Warshall's algorithm on
 */
-
 void Algorithms::FloydWarshall(Graph& g_) {
     float inf = 99999999.0;
     vector<Vertex> all_vertices = g_.getVertices();
@@ -420,7 +423,6 @@ void Algorithms::FloydWarshall(Graph& g_) {
         D[i][i] = 0;
         P[i][i] = all_vertices[i].getId();
     }
-    std::cout << "finish building matrix" << std::endl;
 
     for (size_t i = 0; i < vertices_size; i++) {
         std::cerr << "\rinitiliazing matrix... (" << (i + 1) 
@@ -436,7 +438,6 @@ void Algorithms::FloydWarshall(Graph& g_) {
             }
         }
     }
-    std::cout << "finish initilization" << std::endl;
    
     for (size_t w = 0; w < vertices_size; w++) {
         std::cerr << "\rbuilding distance and path matrix... (" << (w + 1) 
@@ -454,8 +455,11 @@ void Algorithms::FloydWarshall(Graph& g_) {
 }
 
 /**
- * to result a list of vertices of the shortest path.
- * @toreturn 
+ * function that reconstructs the shortest path between two vertices 
+ * using the path matrix created in Floyd-Warshall's algorithm
+ * @param source: id of the source vertex
+ * @param dest: id of the dest vertex
+ * @return: a vector that contains id of vertices in the shrotest path 
  */
 vector<string> Algorithms::construct_path(string source, string dest) {
     vector<string> shortest;
@@ -472,6 +476,7 @@ vector<string> Algorithms::construct_path(string source, string dest) {
 
     return shortest;
 }
+
 float Algorithms::shortest_distance(string source, string dest) {
     return D[M[source]][M[dest]];
 }
