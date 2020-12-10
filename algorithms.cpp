@@ -433,6 +433,7 @@ void Algorithms::FloydWarshall(Graph& g_) {
 
 /**
  * to result a list of vertices of the shortest path.
+ * @toreturn 
  */
 vector<string> Algorithms::construct_path(string source, string dest) {
     vector<string> shortest;
@@ -448,4 +449,7 @@ vector<string> Algorithms::construct_path(string source, string dest) {
     shortest.push_back(dest);
 
     return shortest;
+}
+float Algorithms::shortest_distance(string source, string dest) {
+    return D[M[source]][M[dest]];
 }

@@ -199,7 +199,7 @@ public:
      * @return - if edge exists, set edge weight and return  edge with new weight
      *         - if not, return InvalidEdge
      */
-    Edge setEdgeWeight(Vertex source, Vertex destination, int weight);
+    Edge setEdgeWeight(Vertex source, Vertex destination, float weight);
 
     /**
      * Creates a name for snapshots of the graph.

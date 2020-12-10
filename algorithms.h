@@ -57,6 +57,11 @@ class Algorithms {
          * to result a list of vertices of the shortest path.
          */
         vector<string> construct_path(string source, string dest);
+
+        /**
+         * to get the distance between two points
+         */
+        float shortest_distance(string source, string dest);
     private:
     
         /**

@@ -8,13 +8,13 @@
  * @param latitude2 latitude of second point
  * @param longitude2 longitude of second point
  */ 
-double distance_helper(double latitude1, double longitude1, double latitude2, double longitude2) {
+float distance_helper(float latitude1, float longitude1, float latitude2, float longitude2) {
     const double latDistanceScale = 110574;
     const double lngDistanceScale = 111320;
     const double degToRad = M_PI / 180;
-    double latRadians = degToRad * latitude1;
-    double latDistance = latDistanceScale * (latitude1 - latitude2);
-    double lngDistance = lngDistanceScale * (longitude1 - longitude2) * cos(latRadians);
+    float latRadians = degToRad * latitude1;
+    float latDistance = latDistanceScale * (latitude1 - latitude2);
+    float lngDistance = lngDistanceScale * (longitude1 - longitude2) * cos(latRadians);
     return sqrt(latDistance * latDistance + lngDistance * lngDistance);
 }
    
