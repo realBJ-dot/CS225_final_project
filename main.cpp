@@ -117,13 +117,13 @@ int main() {
       bool get_airports = false;
       while (!get_airports) {
         std::cout << "Please enter the full name of the origin airport" << std::endl;
-        std::cin >> source_airport;
+        std::getline(std::cin >> std::ws, source_airport);
         if (name2id.find(source_airport) == name2id.end()) {
           std::cout << "airport not found, please try again" << std::endl;
           continue;
         }
         std::cout << "Please enter the full name of the destination airport" << std::endl;
-        std::cin >> destination_airport;
+        std::getline(std::cin >> std::ws, destination_airport);
         if (name2id.find(destination_airport) == name2id.end()) {
           std::cout << "airport not found, please try again" << std::endl;
           continue;

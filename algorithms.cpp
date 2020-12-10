@@ -38,6 +38,7 @@ void Algorithms::build_graph(string airport_data, string route_data, Graph& g,
             if (counter == 0) {
                 id = part;
             } else if (counter == 1) {
+                part.erase(std::remove(part.begin(),part.end(),'\"'),part.end());
                 name = part;
             } else if (counter == 6) {
                 latitude = atof(part.c_str());
@@ -48,6 +49,7 @@ void Algorithms::build_graph(string airport_data, string route_data, Graph& g,
           }
           id2name[id] = name;
           name2id[name] = id;
+          // std::cout << "name: " << name << " id: " << name2id[name] << std::endl;
           Vertex v_ = Vertex(id, latitude, longitude);
           g.insertVertex(v_);
       }
