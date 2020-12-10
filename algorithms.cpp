@@ -9,8 +9,11 @@ using std::ifstream;
  * @param airport_data: filename of airport data
  * @param route_data: filename of route data
  * @param g: empty graph to built on
+ * @param id2name: map that map id of airport to its full name
+ * @param name2id: map that map name of airport to its id
  */
-void Algorithms::build_graph(string airport_data, string route_data, Graph& g) {
+void Algorithms::build_graph(string airport_data, string route_data, Graph& g, 
+                             std::map<string, string>& id2name, std::map<string, string>& name2id) {
    /**
    * load airport data. use counter to keep track of different part of 
    * airport information.
@@ -25,6 +28,7 @@ void Algorithms::build_graph(string airport_data, string route_data, Graph& g) {
           std::istringstream ss(word);
           int counter = 0;
           string id;
+          string name;
           float latitude;
           float longitude;
           /** split single line on ','.
@@ -33,6 +37,8 @@ void Algorithms::build_graph(string airport_data, string route_data, Graph& g) {
           while(std::getline(ss, part, ',')) {
             if (counter == 0) {
                 id = part;
+            } else if (counter == 1) {
+                name = part;
             } else if (counter == 6) {
                 latitude = atof(part.c_str());
             } else if (counter == 7) {
@@ -40,6 +46,8 @@ void Algorithms::build_graph(string airport_data, string route_data, Graph& g) {
             }
             counter++;
           }
+          id2name[id] = name;
+          name2id[name] = id;
           Vertex v_ = Vertex(id, latitude, longitude);
           g.insertVertex(v_);
       }
@@ -278,6 +286,8 @@ void Algorithms::visualization(Graph& g_) {
         }
     }
 
+    p.writeToFile("world_map_with_airports.png");
+
     for (auto& e : g_.getEdges()) {
         // Edge e = g_.getEdge(Vertex("3484"), Vertex("3877"));
         float source_lat = e.source.getLatitude();
@@ -390,7 +400,7 @@ void Algorithms::visualization(Graph& g_) {
         
     
 
-    p.writeToFile("world_map_with_airports.png");
+    p.writeToFile("world_map_with_airports_and_routes.png");
 }
 
 
@@ -399,27 +409,37 @@ void Algorithms::visualization(Graph& g_) {
 */
 
 void Algorithms::FloydWarshall(Graph& g_) {
-    float inf = 99999999;
-    size_t vertices_size = g_.getVertices().size();
+    float inf = 99999999.0;
+    vector<Vertex> all_vertices = g_.getVertices();
+    size_t vertices_size = all_vertices.size();
     D = vector<vector<float>>(vertices_size, vector<float>(vertices_size, inf));
     P = vector<vector<string>>(vertices_size, vector<string>(vertices_size, "-1"));
     for (size_t i = 0; i < vertices_size; i++) {
         D[i][i] = 0;
-        P[i][i] = g_.getVertices()[i].getId();
+        P[i][i] = all_vertices[i].getId();
     }
+    std::cout << "finish building matrix" << std::endl;
+
     for (size_t i = 0; i < vertices_size; i++) {
-        M[g_.getVertices()[i].getId()] = i;
+        std::cerr << "\rinitiliazing matrix... (" << (i + 1) 
+                 << "/" << vertices_size << ")" << string(20, ' ') << "\r";
+        cerr.flush();
+        M[all_vertices[i].getId()] = i;
         for (size_t j = 0; j < vertices_size; j++) {
-            if (g_.edgeExists(g_.getVertices()[i], g_.getVertices()[j])) {
-                D[i][j] = g_.getEdgeWeight(g_.getVertices()[i], g_.getVertices()[j]);
-                P[i][j] = g_.getVertices()[j].getId();
+            if (g_.edgeExists(all_vertices[i], all_vertices[j])) {
+                D[i][j] = g_.getEdgeWeight(all_vertices[i], all_vertices[j]);
+                P[i][j] = all_vertices[j].getId();
             } else {
                 continue;
             }
         }
     }
+    std::cout << "finish initilization" << std::endl;
    
     for (size_t w = 0; w < vertices_size; w++) {
+        std::cerr << "\rbuilding distance and path matrix... (" << (w + 1) 
+                 << "/" << vertices_size << ")" << string(20, ' ') << "\r";
+        cerr.flush();
         for (size_t u = 0; u < vertices_size; u++) {
             for (size_t v = 0; v < vertices_size; v++) {
                 if (D[u][v] > D[u][w] + D[w][v]) {

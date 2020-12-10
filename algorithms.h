@@ -20,8 +20,11 @@ class Algorithms {
          * @param airport_data: filename of airport data
          * @param route_data: filename of route data
          * @param g: empty graph to built on
+         * @param id2name: map that map id of airport to its full name
+         * @param name2id: map that map name of airport to its id
          */
-        void build_graph(string airport_data, string route_data, Graph& g);
+        void build_graph(string airport_data, string route_data, Graph& g, 
+                            std::map<string, string>& id2name, std::map<string, string>& name2id);
 
         /**
          * BFS traversal

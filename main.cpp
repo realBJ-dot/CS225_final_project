@@ -8,6 +8,10 @@ int main() {
   std::cout << "test main file" << std::endl;
   // initialize an empty graph
   Graph g_ = Graph(true, true);
+  // map that map id of airport to its full name
+  std::map<string, string> id2name;
+  // map that map airports to its id
+  std::map<string, string> name2id;
   Algorithms a_;
 
   /**
@@ -22,7 +26,7 @@ int main() {
     std::cin >> dataset_choice;
     if (dataset_choice == "OF") {
       // use openflight dataset to build the graph
-      a_.build_graph("data/airports.dat", "data/routes.dat", g_);
+      a_.build_graph("data/airports.dat", "data/routes.dat", g_, id2name, name2id);
       // finish choosing dataset
       dataset_end = true;
     } else if (dataset_choice == "Y") {
@@ -50,7 +54,7 @@ int main() {
           }
           // both file exists, build graph and finish reading filename
           file_end = true;
-          a_.build_graph(airport_data, route_data, g_);
+          a_.build_graph(airport_data, route_data, g_, id2name, name2id);
         }
         if (another_choice) {
           file_end = true;
@@ -84,7 +88,7 @@ int main() {
       if(fs0) {
         for (auto& v : dfs_result) {
           // write id of the node followed by a new line character to the txt file 
-          fs0 << v.getId() << std::endl;
+          fs0 << v.getId() << ": " << id2name[v.getId()] << std::endl;
         }
       }
       fs0.close();
@@ -92,13 +96,13 @@ int main() {
       end = true;
     } else if (choice == "BFS") {
       // output order of node visited during BFS to "BFS.txt"
-      std::cout << "running BFS" << std::endl;
+      // std::cout << "running BFS" << std::endl;
       vector<Vertex> bfs_result = a_.BFS(g_);
       std::ofstream fs1("BFS.txt"); 
       if(fs1) {
         for (auto& v : bfs_result) {
           // write id of the node followed by a new line character to the txt file 
-          fs1 << v.getId() << std::endl;
+          fs1 << v.getId() << ": " << id2name[v.getId()] << std::endl;
         }
       }
       fs1.close();
@@ -106,14 +110,47 @@ int main() {
       end = true;
     } else if (choice == "SP") {
       // will be replaced later, place holder for now
-      std::cout << "running shortest path" << std::endl;
+      // std::cout << "running shortest path" << std::endl;
       a_.FloydWarshall(g_);
-      std::cout << "finish" << std::endl;
+      string source_airport;
+      string destination_airport;
+      bool get_airports = false;
+      while (!get_airports) {
+        std::cout << "Please enter the full name of the origin airport" << std::endl;
+        std::cin >> source_airport;
+        if (name2id.find(source_airport) == name2id.end()) {
+          std::cout << "airport not found, please try again" << std::endl;
+          continue;
+        }
+        std::cout << "Please enter the full name of the destination airport" << std::endl;
+        std::cin >> destination_airport;
+        if (name2id.find(destination_airport) == name2id.end()) {
+          std::cout << "airport not found, please try again" << std::endl;
+          continue;
+        }
+        vector<string> path = a_.construct_path(source_airport, destination_airport);
+        if (path.size() == 1 && path[0] == "no path") {
+          std::cout << "no path found" << std::endl;
+        } else {
+          std::cout << "The shortest path from " << source_airport << " to " << destination_airport << "is: " << std::endl; 
+          for (size_t i = 0; i < path.size() - 1; i++) {
+            std::cout << id2name[path[i]] << " --> ";
+          }
+          std::cout << id2name[path[path.size() - 1]] << std::endl;
+        }
+        string again;
+        std::cout << "do you want to find shortest for another two aiports (Y/N)" << std::endl;
+        std::cin >> again;
+        if (again == "N") {
+          get_airports = true;
+        }
+      }
       end = true;
     } else if (choice == "V") {
-      // will be replaced later, place holder for now
+      // output visualization image to "world_map_with_airports.png" and "world_map_with_airports_and_routes.png"
       a_.visualization(g_);
-      std::cout << "output projection onto world map based on data to \"world_map_with_airports.png\"." << std::endl;
+      std::cout << "output projection onto world map based on data to \"world_map_with_airports.png\"";
+      std::cout << " and \"world_map_with_airports_and_routes.png\"" << std::endl;
       end = true;
     } else {
       std::cout << "invalid choice, please try again" << std::endl;
