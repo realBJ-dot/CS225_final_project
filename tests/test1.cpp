@@ -8,21 +8,23 @@
 #include "../graph.h"
 #include "../edge.h"
 #include "../vertex.h"
-#include "../algorithms.cpp"
+#include "../algorithms.h"
 
 // function that generates test graphs
 vector<Graph*> getTestGraph() {
     vector<Graph*> g;
+    // unweighted graphs
     Graph* g1 = new Graph(false, true);
     Graph* g2 = new Graph(false, true);
     Graph* g3 = new Graph(false, true);
     Graph* g4 = new Graph(false, true);
     Graph* g5 = new Graph(false, true);
     Graph* g6 = new Graph(false, true);
-
+    // weighted graphs
     Graph* g7 = new Graph(true, true);
     Graph* g8 = new Graph(true, true);
-
+    Graph* g9 = new Graph(true, true);
+    //vertices
     Vertex v0 = Vertex("0");
     Vertex v1 = Vertex("1");
     Vertex v2 = Vertex("2");
@@ -148,6 +150,25 @@ vector<Graph*> getTestGraph() {
     g8 -> setEdgeWeight(v6, v7, 0);
     g.push_back(g8);
 
+    //g9 is a weighted graph with 4 nodes to test the Floyd-Warshall algorithm.
+    g9 -> insertVertex(v3);
+    g9 -> insertVertex(v2);
+    g9 -> insertVertex(v1);
+    g9 -> insertVertex(v0);
+    g9 -> insertEdge(v0, v1);
+    g9 -> setEdgeWeight(v0, v1, 3);
+    g9 -> insertEdge(v1, v0);
+    g9 -> setEdgeWeight(v1, v0, 8);
+    g9 -> insertEdge(v1, v2);
+    g9 -> setEdgeWeight(v1, v2, 2);
+    g9 -> insertEdge(v2, v0);
+    g9 -> setEdgeWeight(v2, v0, 5);
+    g9 -> insertEdge(v2, v3);
+    g9 -> setEdgeWeight(v2, v3, 1);
+    g9 -> insertEdge(v0, v3);
+    g9 -> setEdgeWeight(v0, v3, 7);
+    g9 -> insertEdge(v3, v0);
+    g9 -> setEdgeWeight(v3, v0, 2);
     return g;
 }
 
@@ -159,7 +180,7 @@ void clear(vector<Graph*> g) {
 }
 
 
-TEST_CASE("BFS: simple graph with 3 nodes, expected 0 1 2") {
+TEST_CASE("BFS: g1, simple graph with 3 nodes, expected 0 1 2") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.BFS(*g[0]);
@@ -170,7 +191,7 @@ TEST_CASE("BFS: simple graph with 3 nodes, expected 0 1 2") {
     clear(g);
 }
 
-TEST_CASE("BFS: graph with 6 nodes, expected 0 1 5 4 2 3") {
+TEST_CASE("BFS: g2, graph with 6 nodes, expected 0 1 5 4 2 3") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.BFS(*g[1]);
@@ -184,7 +205,7 @@ TEST_CASE("BFS: graph with 6 nodes, expected 0 1 5 4 2 3") {
     clear(g);
 }
 
-TEST_CASE("BFS: graph with 8 nodes, expected 0 3 2 6 4 1 7 5") {
+TEST_CASE("BFS: g3, graph with 8 nodes, expected 0 3 2 6 4 1 7 5") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.BFS(*g[2]);
@@ -200,7 +221,7 @@ TEST_CASE("BFS: graph with 8 nodes, expected 0 3 2 6 4 1 7 5") {
     clear(g);
 }
 
-TEST_CASE("BFS: graph with 3 disconnected nodes, expected 0 1 2") {
+TEST_CASE("BFS: g4, graph with 3 disconnected nodes, expected 0 1 2") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.BFS(*g[3]);
@@ -211,7 +232,7 @@ TEST_CASE("BFS: graph with 3 disconnected nodes, expected 0 1 2") {
     clear(g);
 }
 
-TEST_CASE("BFS: graph with 6 nodes and 2 connected components, expected 0 3 1 2 5 4") {
+TEST_CASE("BFS: g5, graph with 6 nodes and 2 connected components, expected 0 3 1 2 5 4") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.BFS(*g[4]);
@@ -225,7 +246,7 @@ TEST_CASE("BFS: graph with 6 nodes and 2 connected components, expected 0 3 1 2 
     clear(g);
 }
 
-TEST_CASE("BFS: graph with 8 nodes and 4 connected components,  expected 0 1 5 4 2 6 7 3") {
+TEST_CASE("BFS: g6, graph with 8 nodes and 4 connected components,  expected 0 1 5 4 2 6 7 3") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.BFS(*g[5]);
@@ -243,7 +264,7 @@ TEST_CASE("BFS: graph with 8 nodes and 4 connected components,  expected 0 1 5 4
 
 
 //////////////////////DFS test cases////////////////////
-TEST_CASE("DFS:simple graph with three nodes, expected 0 1 2") {
+TEST_CASE("DFS: g1, simple graph with three nodes, expected 0 1 2") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.DFS(*g[0]);
@@ -254,7 +275,7 @@ TEST_CASE("DFS:simple graph with three nodes, expected 0 1 2") {
     clear(g);
 }
 
-TEST_CASE("DFS:graph with six nodes, expected 0 1 2 4 3 5") {
+TEST_CASE("DFS: g2, graph with six nodes, expected 0 1 2 4 3 5") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.DFS(*g[1]);
@@ -268,7 +289,7 @@ TEST_CASE("DFS:graph with six nodes, expected 0 1 2 4 3 5") {
     clear(g);
 }
 
-TEST_CASE("DFS:graph with 8 nodes, expected 0 2 1 3 4 5 6 7") {
+TEST_CASE("DFS: g3, graph with 8 nodes, expected 0 2 1 3 4 5 6 7") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.DFS(*g[2]);
@@ -284,7 +305,7 @@ TEST_CASE("DFS:graph with 8 nodes, expected 0 2 1 3 4 5 6 7") {
     clear(g);
 }
 
-TEST_CASE("DFS: graph with 3 disconnected nodes, expected 0 1 2") {
+TEST_CASE("DFS: g4, graph with 3 disconnected nodes, expected 0 1 2") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.DFS(*g[3]);
@@ -295,7 +316,7 @@ TEST_CASE("DFS: graph with 3 disconnected nodes, expected 0 1 2") {
     clear(g);
 }
 
-TEST_CASE("DFS: graph with 6 nodes and 2 connected components, expected 0 3 1 2 4 5") {
+TEST_CASE("DFS: g5, graph with 6 nodes and 2 connected components, expected 0 3 1 2 4 5") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.DFS(*g[4]);
@@ -309,7 +330,7 @@ TEST_CASE("DFS: graph with 6 nodes and 2 connected components, expected 0 3 1 2 
     clear(g);
 }
 
-TEST_CASE("DFS: graph with 8 nodes and 4 connected components,  expected 0 1 5 4 2 7 6 3") {
+TEST_CASE("DFS: g6, graph with 8 nodes and 4 connected components,  expected 0 1 5 4 2 7 6 3") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.DFS(*g[5]);
@@ -326,7 +347,7 @@ TEST_CASE("DFS: graph with 8 nodes and 4 connected components,  expected 0 1 5 4
 }
 
 //////////weighted graph test cases////////////
-TEST_CASE("weighted BFS: graph with 3 nodes and two weighted edges, expected 0, 1, 2") {
+TEST_CASE("weighted BFS: g7, graph with 3 nodes and two weighted edges, expected 0, 1, 2") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.BFS(*g[6]);
@@ -337,7 +358,7 @@ TEST_CASE("weighted BFS: graph with 3 nodes and two weighted edges, expected 0, 
     clear(g);
 }
 
-TEST_CASE("weighted DFS: graph with 8 nodes and 4 connected components") {
+TEST_CASE("weighted DFS: g8, graph with 8 nodes and 4 connected components") {
     vector<Graph*> g = getTestGraph();
     Algorithms a;
     vector<Vertex> v1 = a.DFS(*g[7]);
@@ -352,6 +373,21 @@ TEST_CASE("weighted DFS: graph with 8 nodes and 4 connected components") {
     REQUIRE ( v1[7].getId() == "3" );
     clear(g);
 }
+
+TEST_CASE("weighted shorted path: g9, graph with 4 nodes and 7 weighted nodes") {
+    vector<Graph*> g = getTestGraph();
+    Algorithms a;
+    a.FloydWarshall(*g[8]);
+    vector<std::string> v1 = a.construct_path("0", "3");
+    REQUIRE (v1.size() == 4);
+    REQUIRE (v1[0] == "0");
+    REQUIRE (v1[1] == "1");
+    REQUIRE (v1[2] == "2");
+    REQUIRE (v1[3] == "3");
+    clear(g);
+}
+
+
 
 
 

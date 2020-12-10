@@ -56,7 +56,7 @@ class Algorithms {
         /**
          * to result a list of vertices of the shortest path.
          */
-        vector<string> construct_path(Vertex source, Vertex dest);
+        vector<string> construct_path(string source, string dest);
     private:
     
         /**

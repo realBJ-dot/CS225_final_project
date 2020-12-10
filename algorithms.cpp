@@ -435,13 +435,13 @@ void Algorithms::FloydWarshall(Graph& g_) {
 /**
  * to result a list of vertices of the shortest path.
  */
-vector<string> Algorithms::construct_path(Vertex source, Vertex dest) {
+vector<string> Algorithms::construct_path(string source, string dest) {
     vector<string> shortest;
-    string curr = source.getId();
+    string curr = source;
     
-    while (curr != dest.getId()) {
+    while (curr != dest) {
         shortest.push_back(curr);
-        curr = P[M[curr]][M[dest.getId()]];
+        curr = P[M[curr]][M[dest]];
     }
     return shortest;
 }
