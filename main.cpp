@@ -128,18 +128,18 @@ int main() {
           std::cout << "airport not found, please try again" << std::endl;
           continue;
         }
-        vector<string> path = a_.construct_path(source_airport, destination_airport);
+        vector<string> path = a_.construct_path(name2id[source_airport], name2id[destination_airport]);
         if (path.size() == 1 && path[0] == "no path") {
           std::cout << "no path found" << std::endl;
         } else {
-          std::cout << "The shortest path from " << source_airport << " to " << destination_airport << "is: " << std::endl; 
+          std::cout << "The shortest path from " << source_airport << " to " << destination_airport << " is: " << std::endl; 
           for (size_t i = 0; i < path.size() - 1; i++) {
             std::cout << id2name[path[i]] << " --> ";
           }
           std::cout << id2name[path[path.size() - 1]] << std::endl;
         }
         string again;
-        std::cout << "do you want to find shortest for another two aiports (Y/N)" << std::endl;
+        std::cout << "Do you want to find shortest for another two aiports (Y/N)" << std::endl;
         std::cin >> again;
         if (again == "N") {
           get_airports = true;
