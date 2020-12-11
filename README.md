@@ -8,7 +8,7 @@ This project loads airports and routes data in <a href="https://openflights.org/
 <p style = "line-height: 1.8">
   <b>Available algorithms</b> are: <br>
   1. DFS & BFS traversal <br>
-  2. Shortest path between two airports (Floyd-Warshall's Algorithm) <br>
+  2. Shortest path between two airports (Floyd-Warshall Algorithm) <br>
   3. Visualization (project airports and routes onto world map)<br>
 </p>
 <br>
