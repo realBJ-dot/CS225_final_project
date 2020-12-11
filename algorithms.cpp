@@ -349,11 +349,11 @@ void Algorithms::visualization(Graph& g_) {
 
 
 /**
- * Floyd Warshall's algorithm
+ * Floyd Warshall algorithm
  * Constructs a distance matrix D that demonstrate the shortest distance
  * between every pair of vertices
  * and a path matrix P that helps reconstructs the shortest path
- * @param g_: graph to run Floyd Warshall's algorithm on
+ * @param g_: graph to run Floyd Warshall algorithm on
 */
 void Algorithms::FloydWarshall(Graph& g_) {
     float inf = 99999999.0;
@@ -403,7 +403,7 @@ void Algorithms::FloydWarshall(Graph& g_) {
 
 /**
  * function that reconstructs the shortest path between two vertices 
- * using the path matrix created in Floyd-Warshall's algorithm
+ * using the path matrix created in Floyd-Warshall algorithm
  * @param source: id of the source vertex
  * @param dest: id of the dest vertex
  * @return: a vector that contains id of vertices in the shrotest path 

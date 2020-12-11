@@ -25,7 +25,7 @@ int main() {
   while (!dataset_end) {
     std::cout << std::endl;
     std::cout << "Do you want to run algorithms on the OpenFlights dataset (OF) we used or dataset of your choice (Y)" << std::endl;
-    std::cout << "Due to the runtime of Floyd-Warshall's algorithm, the program takes a long time to find the shortest path for large datasets, " << std::endl;
+    std::cout << "Due to the runtime of Floyd-Warshall algorithm, the program takes a long time to find the shortest path for large datasets, " << std::endl;
     std::cout << "including the OpenFlight dataset that we are using." << std::endl;
     std::cout << "For testing and grading purpose, we provide a subset of the OpenFlight dataset";
     std::cout << ", which only include US airports and routes." << std::endl;
@@ -92,7 +92,7 @@ int main() {
     std::cout << "Please choose the algorithm you want to run" << std::endl;
     std::cout << "The available algorithms are: " << std::endl;
     std::cout << "DFS/BFS traversal (enter DFS for DFS and BFS for BFS)" << std::endl;
-    std::cout << "Shortest path between two points (Floyd-Warshall's algorithm) using distance as weight (enter SP)" << std::endl;
+    std::cout << "Shortest path between two points (Floyd-Warshall algorithm) using distance as weight (enter SP)" << std::endl;
     std::cout << "Project onto map based on Openflight dataset (enter V)" << std::endl;
     std::cin >> choice;
     if (choice == "DFS") {
