@@ -1,0 +1,6 @@
+Week 4
+6th Dec - 11th Dec.
+This week is the most challenging week we've ever had.
+We accomplished the Floyd-Warshall algorithms and applied it to out test cases, partial data of our choose, and the whole big dataset.
+We also finished the visualization algorithms, where we found that drawing lines on pixels using Bresenham algorithm is a challengin and interesting work.
+Till now the whole code part of the project is finished.
