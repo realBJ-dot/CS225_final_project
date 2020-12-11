@@ -44,25 +44,36 @@ class Algorithms {
 
         /**
          * graphic output of graph
-         * function that project graph on to world map 
-         * vertices of graph are airports and edges are routes
-         * result is saved as a PNG named "world_map_with_airports.png"
+         * function that project airports and routes on to world map 
+         * result is saved as "world_map_with_airports.png" 
+         * and "world_map_with_airports_and_routes.png"
          * @param g_ : graph to visualize
          */
         void visualization(Graph& g_);
 
         /**
-         *Floyd_Warshall algorithm.
+         * Floyd Warshall's algorithm
+         * Constructs a distance matrix D that demonstrate the shortest distance
+         * between every pair of vertices
+         * and a path matrix P that helps reconstructs the shortest path
+         * @param g_: graph to run Floyd Warshall's algorithm on
         */
         void FloydWarshall(Graph& g_);
 
         /**
-         * to result a list of vertices of the shortest path.
+         * function that reconstructs the shortest path between two vertices 
+         * using the path matrix created in Floyd-Warshall's algorithm
+         * @param source: id of the source vertex
+         * @param dest: id of the dest vertex
+         * @return: a vector that contains id of vertices in the shrotest path 
          */
         vector<string> construct_path(string source, string dest);
 
         /**
-         * to get the distance between two points
+         * calculate the distance of the shrotest path between source and dest
+         * @param source: id of the source vertex
+         * @param dest: id of the dest vertex
+         * @return: shortest distance betwee source and dest
          */
         float shortest_distance(string source, string dest);
    
@@ -79,9 +90,20 @@ class Algorithms {
         void DFS_Traversal(Graph& g_, Vertex start_vertex, vector<Vertex>& toReturn, 
                     std::map<string, bool>& visited_);   
         
-
+        /**
+         * 2d vector used to store the distance matrix created by Floyd-Warshall's algorithm
+         * also used by shortest_distance function
+         */
         vector<vector<float>> D; 
+        /**
+         * 2d vector used to store the path matrix created by Floyd-Warshall's algorithm
+         * also used by construct_path function
+         */ 
         vector<vector<string>> P; 
+        /**
+         * map that maps vertex id to its index in vertex vector returned by getVertices function
+         * help construct distance and path matrix in Floyd-Warshall's algorithm
+         */
         std::map<string, int> M;
 };
 

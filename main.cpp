@@ -13,8 +13,10 @@ int main() {
   std::map<string, string> name2id;
   Algorithms a_;
 
+  std::cout << "This program generates graph and runs algorithms on flight datasets" << std::endl;
   /**
    * collect user input to decied which dataset to use
+   * use dataset_end to keep track of whether user finished choosing dataset
    */ 
   string dataset_choice;
   string airport_data;
@@ -23,6 +25,11 @@ int main() {
   while (!dataset_end) {
     std::cout << std::endl;
     std::cout << "Do you want to run algorithms on the OpenFlights dataset (OF) we used or dataset of your choice (Y)" << std::endl;
+    std::cout << "Due to the runtime of Floyd-Warshall's algorithm, the program takes a long time to find the shortest path for large datasets, " << std::endl;
+    std::cout << "including the OpenFlight dataset that we are using." << std::endl;
+    std::cout << "For testing and grading purpose, we provide a subset of the OpenFlight dataset";
+    std::cout << ", which only include US airports and routes." << std::endl;
+    std::cout << "You can enter US to run algorithm on this subset." << std::endl;
     std::cin >> dataset_choice;
     if (dataset_choice == "OF") {
       // use openflight dataset to build the graph
@@ -66,6 +73,9 @@ int main() {
           dataset_end = true;
         }
       }
+    } else if (dataset_choice == "US") {
+      a_.build_graph("data/airports_US.dat", "data/routes.dat", g_, id2name, name2id);
+      dataset_end = true;
     } else {
       std::cout << "invalid choice, please try again" << std::endl;
     }
@@ -82,7 +92,7 @@ int main() {
     std::cout << "Please choose the algorithm you want to run" << std::endl;
     std::cout << "The available algorithms are: " << std::endl;
     std::cout << "DFS/BFS traversal (enter DFS for DFS and BFS for BFS)" << std::endl;
-    std::cout << "Shortest path between two points using distance as weight (enter SP)" << std::endl;
+    std::cout << "Shortest path between two points (Floyd-Warshall's algorithm) using distance as weight (enter SP)" << std::endl;
     std::cout << "Project onto map based on Openflight dataset (enter V)" << std::endl;
     std::cin >> choice;
     if (choice == "DFS") {
@@ -98,7 +108,13 @@ int main() {
       fs0.close();
       std::cout << std::endl;
       std::cout << "output order of node visited during DFS to \"DFS.txt\"" << std::endl;
-      end = true;
+      std::cout << std::endl;
+      string another_a;
+      std::cout << "Enter Y if you want to run another algorithm. Enter anything else to terminate the program" << std::endl;
+      std::cin >> another_a;
+      if (another_a != "Y") {
+        end = true;
+      }
     } else if (choice == "BFS") {
       // output order of node visited during BFS to "BFS.txt"
       // std::cout << "running BFS" << std::endl;
@@ -113,7 +129,13 @@ int main() {
       fs1.close();
       std::cout << std::endl;
       std::cout << "output order of node visited during BFS to \"BFS.txt\"" << std::endl;
-      end = true;
+      std::cout << std::endl;
+      string another_a;
+      std::cout << "Enter Y if you want to run another algorithm. Enter anything else to terminate the program" << std::endl;
+      std::cin >> another_a;
+      if (another_a != "Y") {
+        end = true;
+      }
     } else if (choice == "SP") {
       // will be replaced later, place holder for now
       // std::cout << "running shortest path" << std::endl;
@@ -128,7 +150,7 @@ int main() {
         std::cout << "Please enter the full name of the origin airport" << std::endl;
         std::getline(std::cin >> std::ws, source_airport);
         if (name2id.find(source_airport) == name2id.end()) {
-          std::cout << "airport not found, please try again" << std::endl;
+          std::cout << "airport not found in dataset, please try again" << std::endl;
           continue;
         }
         std::cout << std::endl;
@@ -154,20 +176,33 @@ int main() {
         }
         std::cout << std::endl;
         string again;
-        std::cout << "Do you want to find shortest for another two aiports (Y/N)" << std::endl;
+        std::cout << "Enter Y if you want to find shortest path between another two airports" << std::endl; 
+        std::cout << "Enter anything else to stop the algorithm" << std::endl;
         std::cin >> again;
-        if (again == "N") {
+        if (again != "Y") {
           get_airports = true;
         }
       }
-      end = true;
+      std::cout << std::endl;
+      string another_a;
+      std::cout << "Enter Y if you want to run another algorithm. Enter anything else to terminate the program" << std::endl;
+      std::cin >> another_a;
+      if (another_a != "Y") {
+        end = true;
+      }
     } else if (choice == "V") {
       // output visualization image to "world_map_with_airports.png" and "world_map_with_airports_and_routes.png"
       a_.visualization(g_);
       std::cout << std::endl;
       std::cout << "output projection onto world map based on data to \"world_map_with_airports.png\"";
       std::cout << " and \"world_map_with_airports_and_routes.png\"" << std::endl;
-      end = true;
+      std::cout << std::endl;
+      string another_a;
+      std::cout << "Enter Y if you want to run another algorithm. Enter anything else to terminate the program" << std::endl;
+      std::cin >> another_a;
+      if (another_a != "Y") {
+        end = true;
+      }
     } else {
       std::cout << "invalid choice, please try again" << std::endl;
     }

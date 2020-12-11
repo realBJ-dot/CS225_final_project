@@ -1,7 +1,7 @@
 
 /** 
- * most part are from lab_ml
- * deleted unnecessary part and modified for Vertex class
+ * most part of the graph class is from lab_ml
+ * deleted unnecessary part and modified to adpat to our own Vertex class
  */
 
 #include "graph.h"
@@ -223,8 +223,8 @@ bool Graph::insertEdge(Vertex source, Vertex destination)
 {   
     if (adjacency_list.find(source) == adjacency_list.end()  || 
         adjacency_list.find(destination) == adjacency_list.end()) {
-            // dataset mismatch, the destination/source airport is only in the route dataset
-            // not in the airport dataset
+            // dataset mismatch, the destination or source airport is only in the route dataset
+            // and not in the airport dataset
             return false;
         }
     if(adjacency_list.find(source)!= adjacency_list.end() 

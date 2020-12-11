@@ -206,7 +206,7 @@ void Algorithms::visualization(Graph& g_) {
     PNG p;
     // use world-map.png as background
     p.readFromFile("world-map.png");
-    // calculate position of 0 degree latitude and longitude
+    // calculate pixel position of 0 degree latitude and longitude
     float lat0 = p.height() / 2;
     float lng0 = p.width() / 2;
     // calculate num of pixels for one degree
@@ -218,125 +218,73 @@ void Algorithms::visualization(Graph& g_) {
     for (auto& v : vertices) {
         float lat = v.getLatitude();
         float lng = v.getLongitude();
-        float lat_p = (0-lat)*lat_degree + lat0;
-        float lng_p = lng*lng_degree + lng0;
-        // check point is in bound
-        
-        
-        if ((unsigned) lng_p  < p.width() && (unsigned) lat_p < p.height()) {
-            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p, (int) lat_p);
-            pixel.h = 0;
-            pixel.a = 1;
-            pixel.l = .5;
-            pixel.s = .5;
-        }
-        if ((unsigned) lng_p + 1  < p.width() && (unsigned) lat_p < p.height()) {
-            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + 1, (int) lat_p);
-            pixel.h = 0;
-            pixel.a = 1;
-            pixel.l = .5;
-            pixel.s = .5;
-        }
-        if ((unsigned) lng_p  < p.width() && (unsigned) lat_p - 1 < p.height()) {
-            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p, (int) lat_p - 1);
-            pixel.h = 0;
-            pixel.a = 1;
-            pixel.l = .5;
-            pixel.s = .5;
-        }
-        if ((unsigned) lng_p + 1  < p.width() && (unsigned) lat_p - 1 < p.height()) {
-            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + 1, (int) lat_p - 1);
-            pixel.h = 0;
-            pixel.a = 1;
-            pixel.l = .5;
-            pixel.s = .5;
-        }
-        if ((unsigned) lng_p + 2 < p.width() && (unsigned) lat_p < p.height()) {
-            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + 2, (int) lat_p);
-            pixel.h = 0;
-            pixel.a = 1;
-            pixel.l = .5;
-            pixel.s = .5;
-        }
-        if ((unsigned) lng_p + 2 < p.width() && (unsigned) lat_p - 1 < p.height()) {
-            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + 2, (int) lat_p - 1);
-            pixel.h = 0;
-            pixel.a = 1;
-            pixel.l = .5;
-            pixel.s = .5;
-        }
-        if ((unsigned) lng_p + 2  < p.width() && (unsigned) lat_p - 2 < p.height()) {
-            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + 2, (int) lat_p - 2);
-            pixel.h = 0;
-            pixel.a = 1;
-            pixel.l = .5;
-            pixel.s = .5;
-        }
-        if ((unsigned) lng_p + 1  < p.width() && (unsigned) lat_p - 2 < p.height()) {
-            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + 1, (int) lat_p - 2);
-            pixel.h = 0;
-            pixel.a = 1;
-            pixel.l = .5;
-            pixel.s = .5;
-        }
-        if ((unsigned) lng_p  < p.width() && (unsigned) lat_p - 2 < p.height()) {
-            cs225::HSLAPixel & pixel = p.getPixel((int) lng_p, (int) lat_p - 2);
-            pixel.h = 0;
-            pixel.a = 1;
-            pixel.l = .5;
-            pixel.s = .5;
+        // calculates the pixel position of airport on the map
+        float lat_p = (0 - lat) * lat_degree + lat0;
+        float lng_p = lng * lng_degree + lng0;
+        // change color of the pixel that corresponds to the airport to red
+        // also change color of the 8 pixels around the airport to make it 
+        // more visible on the map
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
+                if (lng_p + i > 0 && lng_p + i < (int) p.width()
+                    && (lat_p + j > 0 && lat_p + j < (int) p.height())) {
+                        cs225::HSLAPixel & pixel = p.getPixel((int) lng_p + i, (int) lat_p + j);
+                        pixel.h = 0;
+                        pixel.a = 1;
+                        pixel.l = .5;
+                        pixel.s = .5;
+                    }
+            }
         }
     }
 
+    // output png that only contains airports
     p.writeToFile("world_map_with_airports.png");
-
+    
+    // visualize routes
+    // go through all the edges of the graph and use Bresenham’s Line Algorithm 
+    // to draw a pixel line between two pixels
     for (auto& e : g_.getEdges()) {
-        // Edge e = g_.getEdge(Vertex("3484"), Vertex("3877"));
+        // get pixel position of the source 
         float source_lat = e.source.getLatitude();
         float source_lng = e.source.getLongitude();
-
         float source_lat_p = (0-source_lat)*lat_degree + lat0;
         float source_lng_p = source_lng*lng_degree + lng0;
-
+        // get pixel position of the destination
         float dest_lat = e.dest.getLatitude();
         float dest_lng = e.dest.getLongitude();
-
         float dest_lat_p = (0-dest_lat)*lat_degree + lat0;
         float dest_lng_p = dest_lng*lng_degree + lng0;
-
+        // calculate the change in x, y of pixels
         int lat_change = abs((int) dest_lat_p - (int) source_lat_p);
         int lng_change = abs((int) dest_lng_p - (int) source_lng_p);
-
+        
         if (lng_change > lat_change) {
-
             int start_lat = source_lat_p;
             int start_lng = source_lng_p;
             int end_lat = dest_lat_p;
             int end_lng = dest_lng_p;
-
+            // if source is on the right of dest, use dest as starting point
             if (source_lng_p > dest_lng_p) {
                 start_lat = dest_lat_p;
                 start_lng = dest_lng_p;
                 end_lng = source_lng_p;
                 end_lat = source_lat_p;
             }
-
-            int A = 2*lat_change;
-            int B = A - 2*lng_change;
+            // Bresenham’s Line Algorithm
+            int A = 2 * lat_change;
+            int B = A - 2 * lng_change;
             int P = A - lng_change;
-
-            
-
             int j = start_lat;
-            
-            for (int i = start_lng+1; i <= end_lng; i++) {
+            // interate over x of pixel
+            for (int i = start_lng + 1; i <= end_lng; i++) {
                 if (P < 0) {
                     cs225::HSLAPixel & pixel = p.getPixel(i, j);
                     pixel.h = 0;
                     pixel.a = 1;
                     pixel.l = 1;
                     pixel.s = .5;
-                    P+=A;
+                    P += A;
                 } else {
                     if (end_lat < start_lat) {
                         j--;
@@ -348,30 +296,27 @@ void Algorithms::visualization(Graph& g_) {
                     pixel.a = 1;
                     pixel.l = 1;
                     pixel.s = .5;
-                    P+=B;
-                    
+                    P += B;
                 }
             }
         } else {
-
             int start_lat = source_lat_p;
             int start_lng = source_lng_p;
             int end_lat = dest_lat_p;
             int end_lng = dest_lng_p;
-
+            // if source is on the right of dest, use dest as starting point
             if (source_lat_p > dest_lat_p) {
                 start_lat = dest_lat_p;
                 start_lng = dest_lng_p;
                 end_lng = source_lng_p;
                 end_lat = source_lat_p;
             }
-
+            // Bresenham’s Line Algorithm
             int A = 2 * lng_change;
             int B = A - 2 * lat_change;
             int P = A - lat_change;
-
             int j = start_lng;
-
+            // interate over y of pixel
             for (int i = start_lat + 1; i <= end_lat; i++) {
                 if (P < 0) {
                     cs225::HSLAPixel & pixel = p.getPixel(j, i);
@@ -379,7 +324,7 @@ void Algorithms::visualization(Graph& g_) {
                     pixel.a = 1;
                     pixel.l = 1;
                     pixel.s = .5;
-                    P+=A;
+                    P += A;
                 } else {
                     if (end_lng < start_lng) {
                         j--;
@@ -391,17 +336,14 @@ void Algorithms::visualization(Graph& g_) {
                     pixel.a = 1;
                     pixel.l = 1;
                     pixel.s = .5;
-                    P+=B;
+                    P += B;
                     
                 }
             }
         }
     }
         
-            
-        
-    
-
+    // output result
     p.writeToFile("world_map_with_airports_and_routes.png");
 }
 
@@ -417,14 +359,18 @@ void Algorithms::FloydWarshall(Graph& g_) {
     float inf = 99999999.0;
     vector<Vertex> all_vertices = g_.getVertices();
     size_t vertices_size = all_vertices.size();
+    // initialize distance matrix and path matrix
+    // size of both matrices are num of vertices * num of vertices vertice
     D = vector<vector<float>>(vertices_size, vector<float>(vertices_size, inf));
     P = vector<vector<string>>(vertices_size, vector<string>(vertices_size, "-1"));
     for (size_t i = 0; i < vertices_size; i++) {
         D[i][i] = 0;
         P[i][i] = all_vertices[i].getId();
     }
-
+    // diagnoal entry of distance matrix is initialized to 0
+    // diagnoal entry of path matrix is initialized to "-1", an invalid vertex id
     for (size_t i = 0; i < vertices_size; i++) {
+        // progress bar to help keep track of algorithm
         std::cerr << "\rinitiliazing matrix... (" << (i + 1) 
                  << "/" << vertices_size << ")" << string(20, ' ') << "\r";
         cerr.flush();
@@ -438,8 +384,9 @@ void Algorithms::FloydWarshall(Graph& g_) {
             }
         }
     }
-   
+    // construct distance and path matrix
     for (size_t w = 0; w < vertices_size; w++) {
+        // progress bar to help keep track of algorithm
         std::cerr << "\rbuilding distance and path matrix... (" << (w + 1) 
                  << "/" << vertices_size << ")" << string(20, ' ') << "\r";
         cerr.flush();
@@ -464,19 +411,27 @@ void Algorithms::FloydWarshall(Graph& g_) {
 vector<string> Algorithms::construct_path(string source, string dest) {
     vector<string> shortest;
     string curr = source;
+    // check if there is a path between source and dest
     if (P[M[curr]][M[dest]] == "-1") {
         shortest.push_back("no path");
         return shortest;
     }
+    // reconstruct path
     while (curr != dest) {
         shortest.push_back(curr);
         curr = P[M[curr]][M[dest]];
     }
     shortest.push_back(dest);
-
     return shortest;
 }
 
+
+/**
+ * calculate the distance of the shrotest path between source and dest
+ * @param source: id of the source vertex
+ * @param dest: id of the dest vertex
+ * @return: shortest distance betwee source and dest
+ */
 float Algorithms::shortest_distance(string source, string dest) {
     return D[M[source]][M[dest]];
 }
