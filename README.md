@@ -3,12 +3,12 @@
 <br>
 <h2>Introduction</h2>
 <p style = "line-height: 1.8">
-This project load airports and routes data in <a href="https://openflights.org/data.html">OpenFlight</a> dataset as a graph with airports as vertices and routes as edges,  then use that graph to run algorithms. <br />
+This project loads airports and routes data in <a href="https://openflights.org/data.html">OpenFlight</a> dataset as a graph with airports as vertices and routes as edges, then use that graph to run algorithms. <br />
 </p>  
 <p style = "line-height: 1.8">
   <b>Available algorithms</b> are: <br>
   1. DFS & BFS traversal <br>
-  2. shortest path between two airports (Floyd-Warshall's Algorithm) <br>
+  2. Shortest path between two airports (Floyd-Warshall Algorithm) <br>
   3. Visualization (project airports and routes onto world map)<br>
 </p>
 <br>
@@ -41,23 +41,20 @@ This project load airports and routes data in <a href="https://openflights.org/d
   Hours offset from UTC. Fractional hours are expressed as decimals, eg. India is 5.5.<br>
   <b>DST:</b> &emsp;&emsp;&emsp;&emsp;
   Daylight savings time. One of E (Europe), A (US/Canada), S (South America),
-    O (Australia), <br> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;
-  Z (New Zealand), N (None) or U (Unknown). <br>
+    O (Australia), Z (New Zealand), N (None) or U (Unknown). <br>
   <b>Tz: </b>&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;
   database time zone	Timezone in "tz" (Olson) format, eg. "America/Los_Angeles".<br>
   <b>Type:</b> &emsp;&emsp;&emsp;&ensp;
-  Type of the airport. Value "airport" for air terminals, "station" for train stations, <br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+  Type of the airport. Value "airport" for air terminals, "station" for train stations, 
     "port" for ferry terminals and "unknown" if not known. <br>
   <b>Source:</b> &emsp;&emsp;&ensp;
-  Source of this data. "OurAirports" for data sourced from OurAirports, "Legacy" for old data not <br>
-  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;
+  Source of this data. "OurAirports" for data sourced from OurAirports, "Legacy" for old data not 
   matched to OurAirports (mostly DAFIF), "User" for unverified user contributions.<br>
 </p>
  <p>
   <b> Sample airport data: </b><br>
-   1, "Goroka Airport", "Goroka", "Papua New Guinea", "GKA", "AYGA", -6.081689834590001, 145.391998291, 5282, 10,  
-    "U", "Pacific/Port_Moresby", "airport", "OurAirports"
+  <i> 1, "Goroka Airport", "Goroka", "Papua New Guinea", "GKA", "AYGA", -6.081689834590001, 145.391998291, 5282, 10,  
+    "U", "Pacific/Port_Moresby", "airport", "OurAirports" </i>
 </p>
 <p style = "line-height: 1.8">
   For the <b>routes</b> data, each entry contains the following information: <br>
@@ -83,21 +80,21 @@ This project load airports and routes data in <a href="https://openflights.org/d
 </p>
 <p>
   <b> Sample route data: </b><br>
-  2B, 410, AER, 2965, KZN, 2990, , 0, CR2
+  <i>2B, 410, AER, 2965, KZN, 2990, , 0, CR2</i>
 </p>
 
 <br>
 <h2>Compiling, Testing, and Running</h2>
 <p style = "line-height: 1.8">
-  The following command can be used to <b>compile and run the program</b>: <br>
+  The following commands can be used to <b>compile and run the program</b>: <br>
   &emsp;&emsp;<code>make</code><br>
   &emsp;&emsp;<code>./graph</code><br>
-Specific instructions of how to choose datasets and run algorithms will be given after running the program.
+Specific instructions of how to choose datasets and run different algorithms will be given after running the program.
   </p>
     
 <p style = "line-height: 1.8">
-  We have provided test cases for traversals and shorted path algorithms. The image of graphs used for testing are stored in the tests folder. <br>
-  The following command can be used to <b>run the test cases</b>: <br>
+  We have provided test cases for traversals and shortest path algorithms. The image of graphs used for testing are stored in the tests folder of this repo. <br>
+  The following commands can be used to <b>run the test cases</b>: <br>
   &emsp;&emsp;<code>make test</code><br>
   &emsp;&emsp;<code>./test</code><br>
 
