@@ -91,9 +91,14 @@ This project load airports and routes data in <a href="https://openflights.org/d
 <p style = "line-height: 1.8">
   The following command can be used to <b>compile and run the program</b>: <br>
   &emsp;&emsp;<code>make</code><br>
-  &emsp;&emsp;<code>./graph<br></code>
+  &emsp;&emsp;<code>./graph</code><br>
 Specific instructions of how to choose datasets and run algorithms will be given after running the program.
   </p>
     
 <p style = "line-height: 1.8">
   We have provided test cases for traversals and shorted path algorithms. The image of graphs used for testing are stored in the tests folder. <br>
+  The following command can be used to <b>run the test cases</b>: <br>
+  &emsp;&emsp;<code>make test</code><br>
+  &emsp;&emsp;<code>./test</code><br>
+
+</p>
